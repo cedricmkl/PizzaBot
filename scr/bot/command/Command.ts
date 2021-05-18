@@ -1,8 +1,9 @@
-import {Client, GuildMember} from "discord.js";
+import {Client, GuildMember, Message} from "discord.js";
 import CommandParameter from "./CommandParameter";
 import {CommandParameterType} from "./CommandParameterType";
 import SlashCommandUtil from "../../utils/command/SlashCommandUtil";
 import CommandArguments from "./CommandArguments";
+import CommandActionExecutor from "./CommandActionExecutor";
 
 export default abstract class Command {
     params: CommandParameter[];
@@ -33,5 +34,8 @@ export default abstract class Command {
         })
     }
 
-    abstract execute(client: Client, member: GuildMember, args: CommandArguments)
+    abstract execute(client: Client, member: GuildMember, args: CommandArguments, executor: CommandActionExecutor)
+    executeTextCommand(client: Client, input: string[], member: GuildMember, message: Message) {
+
+    }
 }

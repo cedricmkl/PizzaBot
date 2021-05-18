@@ -1,7 +1,7 @@
 import {Client, GuildMember} from "discord.js";
 import Command from "./Command";
-import {unwatchFile} from "fs";
 import CommandArguments from "./CommandArguments";
+import CommandActionExecutor from "./CommandActionExecutor";
 
 export default class CommandRegistry {
     private readonly client: Client
@@ -29,7 +29,16 @@ export default class CommandRegistry {
 
             commandArguments.parseData(options, command.params);
 
-            command.execute(this.client, member, commandArguments)
+            command.execute(this.client, member, commandArguments, new CommandActionExecutor(this.client, interaction.token, interaction.id,))
+        })
+
+        this.client.on("message", (message) => {
+            if (!message.guild) return;
+            const args : string[] = message.content.split(" ");
+            const command : Command = this.commands.find(value => value.name === args[0]);
+            if (!command) return;
+            args.shift()
+            command.executeTextCommand(this.client, args, message.member, message)
         })
     }
 
