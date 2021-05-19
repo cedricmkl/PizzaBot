@@ -18,6 +18,7 @@ export default class TagCommand extends Command{
         await executor.sendThinking()
         const name: string = args.getArgument("name").getAsString();
         const content = await this.getTag(name);
+
         await executor.sendWebhookMessage(content)
     }
 
