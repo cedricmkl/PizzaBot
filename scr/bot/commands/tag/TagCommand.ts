@@ -8,8 +8,9 @@ import CommandActionExecutor from "../../command/CommandActionExecutor";
 export default class TagCommand extends Command{
 
     constructor() {
-        super("tag", "Einen Tag in den Channel senden");
+        super("tag", "Einen Tag in den Channel senden", true);
         this.withParameter("name", "Name des Tags", CommandParameterType.STRING, true)
+        this.withAliases(["tags"])
 
     }
 

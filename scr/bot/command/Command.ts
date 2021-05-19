@@ -6,15 +6,23 @@ import CommandArguments from "./CommandArguments";
 import CommandActionExecutor from "./CommandActionExecutor";
 
 export default abstract class Command {
-    params: CommandParameter[];
     readonly name: String;
     readonly description: String;
+    aliases: string[];
+    executeWithOutPrefix: boolean;
+    params: CommandParameter[];
 
 
-    constructor(name: String, description: String) {
+    constructor(name: String, description: String, executeWithOutPrefix: boolean) {
         this.params = [];
         this.name = name;
         this.description = description;
+        this.executeWithOutPrefix = executeWithOutPrefix;
+        this.aliases = [];
+    }
+
+    withAliases(aliases: string[]) {
+        this.aliases = aliases;
     }
 
     withParameter(name: String, description: String, type: CommandParameterType, required: boolean) {
@@ -34,8 +42,10 @@ export default abstract class Command {
         })
     }
 
-    abstract execute(client: Client, member: GuildMember, args: CommandArguments, executor: CommandActionExecutor)
+    executeSlash(client: Client, member: GuildMember, args: CommandArguments, executor: CommandActionExecutor) {
+        executor.sendUserMessage("Der Command ist nicht als Slash-Command implementiert")
+    }
     executeTextCommand(client: Client, input: string[], member: GuildMember, message: Message) {
-
+        message.reply("Der Command ist nicht als Text-Command implementiert")
     }
 }
