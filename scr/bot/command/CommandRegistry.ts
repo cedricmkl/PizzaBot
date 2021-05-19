@@ -29,14 +29,21 @@ export default class CommandRegistry {
 
             commandArguments.parseData(options, command.params);
 
-            command.execute(this.client, member, commandArguments, new CommandActionExecutor(this.client, interaction.token, interaction.id,))
+            command.executeSlash(this.client, member, commandArguments, new CommandActionExecutor(this.client, interaction.token, interaction.id,))
         })
 
         this.client.on("message", (message) => {
             if (!message.guild) return;
+            if (message.author.bot) return;
             const args : string[] = message.content.split(" ");
-            const command : Command = this.commands.find(value => value.name === args[0]);
+            const name = args[0];
+            const command : Command = this.commands.find(value => value.checkTextCommand(name.toLowerCase()));
             if (!command) return;
+            if (!command.canExecute(message.member)) {
+                message.reply("Du kannst diesen Command nicht ausführen!")
+                return;
+            }
+
             args.shift()
             command.executeTextCommand(this.client, args, message.member, message)
         })

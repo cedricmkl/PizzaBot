@@ -9,7 +9,7 @@ export default class PizzaBot {
 
     constructor() {
         DatabaseHelper.connect();
-        this.client = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
+        this.client = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION', 'GUILD_MEMBER'] });
         this.initListeners()
     }
 

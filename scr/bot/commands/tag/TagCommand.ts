@@ -11,10 +11,10 @@ export default class TagCommand extends Command{
         super("tag", "Einen Tag in den Channel senden", true);
         this.withParameter("name", "Name des Tags", CommandParameterType.STRING, true)
         this.withAliases(["tags"])
-
+        this.withRoles(["823462677425815552"])
     }
 
-    async execute(client: Client, member: GuildMember, args: CommandArguments, executor: CommandActionExecutor) {
+    async executeSlash(client: Client, member: GuildMember, args: CommandArguments, executor: CommandActionExecutor) {
         await executor.sendThinking()
         const name: string = args.getArgument("name").getAsString();
         const content = await this.getTag(name);

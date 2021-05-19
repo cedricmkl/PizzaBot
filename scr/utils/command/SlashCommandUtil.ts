@@ -18,7 +18,7 @@ export default class SlashCommandUtil {
 
     static sendUserMessage(client: Client, interactionID: String, interactionToken: String, message: String){
         // @ts-ignore
-        return client.api.interactions(interaction.id, interaction.token).callback.post({
+        return client.api.interactions(interactionID,interactionToken).callback.post({
             data: {
                 type: 4,
                 data: {
