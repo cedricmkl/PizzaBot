@@ -20,23 +20,26 @@ export default class SourceCommand extends Command {
     }
 
     async createEmbed(): Promise<MessageEmbed> {
+        const data = {user: "CoolePizza", repo: "PizzaBot"};
+
+        const url = `https://github.com/${data.user}/${data.repo}`
+
         const embed = new MessageEmbed({
             title: "Ich bin Open Source",
-            url: "https://github.com/CoolePizza/PizzaBot",
+            url: url,
             color: "#03f8fc",
-            description: "Kicke [hier](https://github.com/CoolePizza/PizzaBot) um den Source Code anzusehen.\n\n",
+            description: `Kicke [hier](${url}) um den Source Code anzusehen.`,
             timestamp: new Date()
         });
 
-        const githubData = await this.github.rest.repos.get({owner: "CoolePizza", repo: "PizzaBot"});
+        const githubData = await this.github.rest.repos.get({owner: data.user, repo: data.repo});
         if (!githubData.data) return embed;
-        embed.setFooter(githubData.data.full_name)
+        embed.setFooter(`${data.user}/${data.repo}`)
         embed.setAuthor(githubData.data.owner.login, githubData.data.owner.avatar_url, githubData.data.owner.url)
         embed.addFields([
             {
                 name: "Stars ⭐",
-                value: githubData.data.stargazers_count,
-                inline: true
+                value: githubData.data.stargazers_count
             }
         ])
         return embed;
