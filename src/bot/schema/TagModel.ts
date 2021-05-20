@@ -2,12 +2,14 @@ import {Schema, Document} from "mongoose";
 import * as mongoose from "mongoose";
 
 export interface Tag extends Document {
-    email: string;
-    firstName: string;
-    lastName: string;
+    name: string,
+    createdAt: Date,
+    content: string,
+    aliases: string[],
+    created: boolean
 }
 
-const UserSchema: Schema = new Schema({
+const TagSchema: Schema = new Schema({
     name: {
         type: String,
         required: true,
@@ -34,5 +36,5 @@ const UserSchema: Schema = new Schema({
     }
 });
 
-// Export the model and return your IUser interface
-export default mongoose.model<Tag>('tag', UserSchema);
+// Export the model and return your Tag interface
+export default mongoose.model<Tag>('tag', TagSchema);

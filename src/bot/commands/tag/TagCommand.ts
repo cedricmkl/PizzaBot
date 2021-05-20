@@ -3,6 +3,7 @@ import {Client, GuildMember, Message} from "discord.js";
 import {CommandParameterType} from "../../command/CommandParameterType";
 import CommandArguments from "../../command/CommandArguments";
 import CommandActionExecutor from "../../command/CommandActionExecutor";
+import TagProvider from "../../provider/TagProvider";
 
 
 export default class TagCommand extends Command{
@@ -17,19 +18,24 @@ export default class TagCommand extends Command{
     async executeSlash(client: Client, member: GuildMember, args: CommandArguments, executor: CommandActionExecutor) {
         await executor.sendThinking()
         const name: string = args.getArgument("name").getAsString();
-        const content = await this.getTag(name);
+        const tag = await TagProvider.getTag(name);
+        if (!tag?.created) {
+            executor.sendWebhookMessage(`<@${member.user.id}>, Der Tag existiert nicht`)
+            return;
+        }
 
-        await executor.sendWebhookMessage(content)
+        await executor.sendWebhookMessage(tag.content)
     }
 
     async executeTextCommand(client: Client, args: string[], member: GuildMember, message: Message) {
         const name = args[0];
         if (!name) return message.channel.send("Nutze `tag <name>`")
-        const tag = await this.getTag(name);
-        await message.channel.send(tag);
+        const tag = await TagProvider.getTag(name);
+        if (!tag?.created) {
+            message.reply("Der Tag existiert nicht")
+            return;
+        }
+        await message.channel.send(tag.content);
     }
 
-    private async getTag(name: string) : Promise<string>{
-        return await "Tag from Database"
-    }
 }

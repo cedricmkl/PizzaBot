@@ -1,4 +1,4 @@
-import {Client} from "discord.js";
+import {APIMessageContentResolvable, Client, MessageEmbed, MessageResolvable} from "discord.js";
 
 export default class SlashCommandUtil {
     static createGuildCommand(client: Client, guildID: String, data: any) {
@@ -16,7 +16,7 @@ export default class SlashCommandUtil {
         })
     }
 
-    static sendUserMessage(client: Client, interactionID: String, interactionToken: String, message: String){
+    static sendUserMessage(client: Client, interactionID: String, interactionToken: String, message: MessageEmbed | APIMessageContentResolvable){
         // @ts-ignore
         return client.api.interactions(interactionID,interactionToken).callback.post({
             data: {

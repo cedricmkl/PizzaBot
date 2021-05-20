@@ -2,6 +2,7 @@ import { Client } from "discord.js"
 import DatabaseHelper from "../utils/DatabaseHelper";
 import TagCommand from "./commands/tag/TagCommand";
 import CommandRegistry from "./command/CommandRegistry";
+import SourceCommand from "./commands/SourceCommand";
 
 export default class PizzaBot {
     private readonly client: Client
@@ -28,5 +29,6 @@ export default class PizzaBot {
         this.commandRegistry = new CommandRegistry(this.client)
 
         this.commandRegistry.registerCommand(new TagCommand())
+        this.commandRegistry.registerCommand(new SourceCommand())
     }
 }
