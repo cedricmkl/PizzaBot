@@ -5,6 +5,7 @@ import CommandArguments from "../../command/CommandArguments";
 import CommandActionExecutor from "../../command/CommandActionExecutor";
 import TagProvider from "../../provider/TagProvider";
 import PermissionsUtil from "../../../utils/PermissionsUtil";
+import PasteUtil from "../../../utils/PasteUtil";
 
 
 export default class CreateTagCommand extends Command{
@@ -38,8 +39,10 @@ export default class CreateTagCommand extends Command{
     async createTag(member: GuildMember, name: string, content: string) : Promise<string>{
         if (name.includes(" ")) return "Der Tag-Name kann keine Leerzeichen enthalten"
         if (!PermissionsUtil.canExecute([process.env.MOD_ROLE], member)) {
+            let url = await PasteUtil.paste(content)
+
             return `Du kannst diesen Tag nicht erstellen, da du keine Rechte besitzt! Warte bis ein Teammitglied deinen Tag erstellt oder ablehnt!` +
-                ` Beachte das dein Tag **selbstgeschrieben** sein muss!\n So würde dein Tag aussehen: \n${content}`
+                ` Beachte das dein Tag **selbstgeschrieben** sein muss! Einen Raw Version von deinem Tag wurde hier hochgeladen: ${url.replace(".md", "")}\n\n So würde dein Tag aussehen: \n${content}`
         }
 
         try {

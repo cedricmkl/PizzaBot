@@ -7,6 +7,26 @@ export default class SlashCommandUtil {
             data: data
         })
     }
+
+    static overridePermissions(client: Client, guildID: String, commandID: String, roles: String[]) {
+        const permissions = [];
+
+        roles.forEach(value => {
+            permissions.push({
+                id: value,
+                type: 1,
+                permission: true
+            })
+        })
+
+        // @ts-ignore
+        return client.api.applications(client.user.id).guilds(guildID).commands(commandID).permissions.put({
+            data: {
+                permissions: permissions
+            }
+        })
+    }
+
     static sendThinking(client: Client, interactionID: String, interactionToken: String){
         // @ts-ignore
         return client.api.interactions(interactionID, interactionToken).callback.post({

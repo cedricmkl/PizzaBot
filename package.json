@@ -17,6 +17,8 @@
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "google-search": "0.0.5",
+    "hastebin": "^0.2.1",
+    "hastebin-gen": "^2.0.5",
     "mongoose": "^5.12.2"
   },
   "devDependencies": {

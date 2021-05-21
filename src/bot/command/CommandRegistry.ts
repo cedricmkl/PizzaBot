@@ -31,6 +31,8 @@ export default class CommandRegistry {
 
             commandArguments.parseData(options, command.params);
 
+            if(!command.canExecute(member)) return;
+
             command.executeSlash(this.client, member, commandArguments, new CommandActionExecutor(this.client, interaction.token, interaction.id,))
         })
 
@@ -51,8 +53,8 @@ export default class CommandRegistry {
         })
     }
 
-    registerCommand(command: Command) {
+    async registerCommand(command: Command) {
         this.commands.push(command)
-        command.registerCommand(this.client)
+        await command.registerSlashCommand(this.client)
     }
 }

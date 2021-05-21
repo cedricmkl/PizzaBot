@@ -5,6 +5,8 @@ import SlashCommandUtil from "../../utils/command/SlashCommandUtil";
 import CommandArguments from "./CommandArguments";
 import CommandActionExecutor from "./CommandActionExecutor";
 import PermissionsUtil from "../../utils/PermissionsUtil";
+import {deflateRawSync} from "zlib";
+import {unwatchFile} from "fs";
 
 export default abstract class Command {
     readonly name: String;
@@ -36,17 +38,21 @@ export default abstract class Command {
         this.params = [...this.params, new CommandParameter(name, description, type, required)]
     }
 
-    registerCommand(client: Client) {
+    async registerSlashCommand(client: Client) {
         let options = [];
         this.params.forEach(value => {
             options.push(value.toOption())
         })
 
-        SlashCommandUtil.createGuildCommand(client, process.env.GUILD, {
+        const command = await SlashCommandUtil.createGuildCommand(client, process.env.GUILD, {
             name: this.name,
             description: this.description,
             options: options
         })
+
+        if (command?.id) {
+            SlashCommandUtil.overridePermissions(client, process.env.GUILD, command.id, this.roles)
+        }
     }
 
     executeSlash(client: Client, member: GuildMember, args: CommandArguments, executor: CommandActionExecutor) {
