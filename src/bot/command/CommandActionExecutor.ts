@@ -1,13 +1,5 @@
 import SlashCommandUtil from "../../utils/command/SlashCommandUtil";
-import {
-    APIMessage,
-    APIMessageContentResolvable,
-    Client,
-    MessageEditOptions,
-    MessageEmbed,
-    MessageResolvable,
-    WebhookClient
-} from "discord.js";
+import {Client, MessageEmbed, WebhookClient} from "discord.js";
 
 export default class CommandActionExecutor {
     readonly client: Client
@@ -25,11 +17,11 @@ export default class CommandActionExecutor {
         return await SlashCommandUtil.sendThinking(this.client, this.slashCommandInteractionID, this.slashCommandInteractionToken);
     }
 
-    async sendUserMessage(message: MessageEmbed | APIMessageContentResolvable) {
+    async sendUserMessage(message: MessageEmbed | string) {
         return await SlashCommandUtil.sendUserMessage(this.client, this.slashCommandInteractionID, this.slashCommandInteractionToken, message)
     }
 
-    async sendWebhookMessage(message: MessageEmbed | APIMessageContentResolvable) {
+    async sendWebhookMessage(message: MessageEmbed | string) {
         return await new WebhookClient(this.client.user.id, this.slashCommandInteractionToken).send(message);
     }
 

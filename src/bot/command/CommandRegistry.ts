@@ -14,7 +14,7 @@ export default class CommandRegistry {
 
     private initListener() {
         //@ts-ignore
-        this.client.ws.on("INTERACTION_CREATE", (interaction) => {
+        this.client.ws.on("INTERACTION_CREATE", async (interaction) => {
             if (interaction.type !== 2) return;
             if (interaction.guild_id !== process.env.GUILD) return;
 
@@ -23,7 +23,9 @@ export default class CommandRegistry {
 
             if (command === null) return;
 
-            const member: GuildMember = interaction.member;
+            const guild = await this.client.guilds.fetch(interaction.guild_id)
+            const member: GuildMember = await guild.members.fetch(interaction.member.user.id);
+
             const options = interaction.data.options;
             const commandArguments : CommandArguments = new CommandArguments();
 
@@ -45,7 +47,7 @@ export default class CommandRegistry {
             }
 
             args.shift()
-            command.executeTextCommand(this.client, args, message.member, message)
+            command.executeText(this.client, args, message.member, message)
         })
     }
 

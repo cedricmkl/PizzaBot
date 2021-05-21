@@ -1,4 +1,4 @@
-import {APIMessageContentResolvable, Client, MessageEmbed, MessageResolvable} from "discord.js";
+import {APIMessageContentResolvable, Client, MessageEmbed} from "discord.js";
 
 export default class SlashCommandUtil {
     static createGuildCommand(client: Client, guildID: String, data: any) {

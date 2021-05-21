@@ -4,6 +4,7 @@ import {CommandParameterType} from "./CommandParameterType";
 import SlashCommandUtil from "../../utils/command/SlashCommandUtil";
 import CommandArguments from "./CommandArguments";
 import CommandActionExecutor from "./CommandActionExecutor";
+import PermissionsUtil from "../../utils/PermissionsUtil";
 
 export default abstract class Command {
     readonly name: String;
@@ -52,7 +53,7 @@ export default abstract class Command {
         executor.sendUserMessage("Der Command ist nicht als Slash-Command implementiert")
     }
 
-    executeTextCommand(client: Client, input: string[], member: GuildMember, message: Message) {
+    executeText(client: Client, input: string[], member: GuildMember, message: Message) {
         message.reply("Der Command ist nicht als Text-Command implementiert")
     }
 
@@ -64,14 +65,6 @@ export default abstract class Command {
 
     canExecute(member: GuildMember) : boolean {
         if (this.roles.length === 0) return true;
-        if (member.hasPermission("ADMINISTRATOR")) return true;
-
-        let hasRole = false;
-        this.roles.forEach(value => {
-        if (member.roles.cache.get(value) != null) {
-            hasRole = true;
-        }})
-        console.log(hasRole);
-        return hasRole;
+        return PermissionsUtil.canExecute(this.roles, member);
     }
 }

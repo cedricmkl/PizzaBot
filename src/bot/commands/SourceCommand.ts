@@ -15,7 +15,7 @@ export default class SourceCommand extends Command {
         this.createEmbed().then(value => executor.sendWebhookMessage(value))
     }
 
-    async executeTextCommand(client: Client, input: string[], member: GuildMember, message: Message) {
+    async executeText(client: Client, input: string[], member: GuildMember, message: Message) {
         this.createEmbed().then(value => message.channel.send(value))
     }
 
