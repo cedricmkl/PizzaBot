@@ -1,8 +1,6 @@
-import Command from "../../command/Command";
+import Command from "../Command";
 import {Client, GuildMember, Message, MessageEmbed} from "discord.js";
-import {CommandParameterType} from "../../command/CommandParameterType";
-import CommandArguments from "../../command/CommandArguments";
-import CommandActionExecutor from "../../command/CommandActionExecutor";
+import {CommandParameterType} from "../CommandParameterType";
 import TagProvider from "../../provider/TagProvider";
 
 
@@ -10,26 +8,26 @@ export default class TagInfoCommand extends Command{
 
     constructor() {
         super("tag-info", "Informationen zu einem Tag anfordern", true);
-        this.withParameter("name", "Name des Tags", CommandParameterType.STRING, true)
+        this.withParameter({ name: "name", description: "Name des Tags", type: CommandParameterType.STRING, required: true })
     }
 
-    async executeSlash(client: Client, member: GuildMember, args: CommandArguments, executor: CommandActionExecutor) {
-        await executor.sendThinking()
-        const name: string = args.getArgument("name").getAsString();
+    async executeSlash(client, command) {
+        await command.defer()
+        const name: string = command.options.find(value => value.name == "name").value
 
-        const result = await this.getTagInfo(member, name)
-        await executor.sendWebhookMessage(result)
+        const result = await this.getTagInfo(name.toLowerCase())
+        await command.editReply(result)
     }
 
     async executeText(client: Client, args: string[], member: GuildMember, message: Message) {
         if (args.length < 1) return message.channel.send("Nutze `tag <name>`")
         const name = args[0];
 
-        const result = await this.getTagInfo(member, name)
+        const result = await this.getTagInfo(name)
         await message.channel.send(result);
     }
 
-    async getTagInfo(member: GuildMember, name: string) : Promise<MessageEmbed | string>{
+    async getTagInfo(name: string) : Promise<MessageEmbed | string>{
         if (name.includes(" ")) return "Der Tag-Name und der Tag-Alias kann keine Leerzeichen enthalten"
         const tag = await TagProvider.getTag(name);
         if (!tag) return "Der Tag existiert nicht"

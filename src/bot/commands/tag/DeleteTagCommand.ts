@@ -1,8 +1,6 @@
-import Command from "../../command/Command";
+import Command from "../Command";
 import {Client, GuildMember, Message} from "discord.js";
-import {CommandParameterType} from "../../command/CommandParameterType";
-import CommandArguments from "../../command/CommandArguments";
-import CommandActionExecutor from "../../command/CommandActionExecutor";
+import {CommandParameterType} from "../CommandParameterType";
 import TagProvider from "../../provider/TagProvider";
 
 
@@ -10,16 +8,16 @@ export default class DeleteTagCommand extends Command{
 
     constructor() {
         super("delete-tag", "Einen bereits existierenden Tag löschen", true);
-        this.withParameter("name", "Name des Tags", CommandParameterType.STRING, true)
+        this.withParameter({ name: "name", description: "Name des Tags", type: CommandParameterType.STRING, required: true })
         this.withRoles([process.env.MOD_ROLE])
     }
 
-    async executeSlash(client: Client, member: GuildMember, args: CommandArguments, executor: CommandActionExecutor) {
-        await executor.sendThinking()
+    async executeSlash(client, command) {
+        /*await executor.sendThinking()
         const name: string = args.getArgument("name").getAsString().toLowerCase();
 
         const result = await this.deleteTag(member, name);
-        await executor.sendWebhookMessage(result)
+        await executor.sendWebhookMessage(result)*/
     }
 
     async executeText(client: Client, args: string[], member: GuildMember, message: Message) {

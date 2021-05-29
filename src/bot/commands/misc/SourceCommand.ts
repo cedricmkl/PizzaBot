@@ -1,7 +1,5 @@
-import Command from "../command/Command";
+import Command from "../Command";
 import {Client, GuildMember, Message, MessageEmbed} from "discord.js";
-import CommandActionExecutor from "../command/CommandActionExecutor";
-import CommandArguments from "../command/CommandArguments";
 import {Octokit} from "@octokit/rest";
 
 export default class SourceCommand extends Command {
@@ -10,9 +8,9 @@ export default class SourceCommand extends Command {
         super("source", "Zeigt einen Link zum Source Code und Stats an", false);
     }
 
-    async executeSlash(client: Client, member: GuildMember, args: CommandArguments, executor: CommandActionExecutor) {
-        await executor.sendThinking()
-        this.createEmbed().then(value => executor.sendWebhookMessage(value))
+    async executeSlash(client, command) {
+        await command.defer()
+        this.createEmbed().then(value => command.editReply(value))
     }
 
     async executeText(client: Client, input: string[], member: GuildMember, message: Message) {

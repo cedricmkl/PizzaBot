@@ -1,22 +1,19 @@
-import Command from "../../command/Command";
+import Command from "../Command";
 import {Client, GuildMember, Message} from "discord.js";
-import CommandArguments from "../../command/CommandArguments";
-import CommandActionExecutor from "../../command/CommandActionExecutor";
 import TagProvider from "../../provider/TagProvider";
 
 
-export default class ListTagsCommand extends Command{
+export default class TagsCommand extends Command{
 
     constructor() {
-        super("list-tags", "Zeigt alle verfügbaren Tags an", true);
-        this.withAliases(["tags"])
+        super("tags", "Zeigt alle verfügbaren Tags an", true);
     }
 
-    async executeSlash(client: Client, member: GuildMember, args: CommandArguments, executor: CommandActionExecutor) {
-        await executor.sendThinking()
+    async executeSlash(client, command) {
+        await command.defer()
 
         const tags = await this.getTags()
-        await executor.sendWebhookMessage(tags)
+        await command.editReply(tags)
     }
 
     async executeText(client: Client, args: string[], member: GuildMember, message: Message) {

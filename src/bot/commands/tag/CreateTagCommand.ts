@@ -1,56 +1,68 @@
-import Command from "../../command/Command";
-import {Client, GuildMember, Message} from "discord.js";
-import {CommandParameterType} from "../../command/CommandParameterType";
-import CommandArguments from "../../command/CommandArguments";
-import CommandActionExecutor from "../../command/CommandActionExecutor";
+import {GuildMember, Message, MessageEmbed, MessageResolvable, Snowflake, Util} from "discord.js";
+import {CommandParameterType} from "../CommandParameterType";
 import TagProvider from "../../provider/TagProvider";
 import PermissionsUtil from "../../../utils/PermissionsUtil";
-import PasteUtil from "../../../utils/PasteUtil";
+import CommandMessageHandler from "../CommandMessageHandler";
 
 
-export default class CreateTagCommand extends Command{
+export default class CreateTagCommand extends CommandMessageHandler{
+    requests: Map<Snowflake, string> = new Map<Snowflake, string>()
 
     constructor() {
         super("create-tag", "Einen neuen Tag erstellen", true);
-        this.withParameter("name", "Name des Tags", CommandParameterType.STRING, true)
-        this.withParameter("content", "Content des Tags", CommandParameterType.STRING, true)
+        this.withParameter({ name: "name", description: "Name des Tags", type: CommandParameterType.STRING, required: true })
     }
 
-    async executeSlash(client: Client, member: GuildMember, args: CommandArguments, executor: CommandActionExecutor) {
-        await executor.sendThinking()
-        const name: string = args.getArgument("name").getAsString().toLowerCase();
-        const content: string = args.getArgument("content").getAsString();
-
-        const result = await this.createTag(member, name, content);
-        await executor.sendWebhookMessage(result)
+    async executeSlash(client, command) {
+        const name: string = command.options.find(value => value.name == "name").value
+        this.requests.set(command.user.id, name.toLowerCase())
+        await command.reply("Gebe den Content des Tags in deiner nächsten Nachricht an")
     }
 
-    async executeText(client: Client, args: string[], member: GuildMember, message: Message) {
-        if (args.length < 2) return message.channel.send("Nutze `" + process.env.PREFIX + "create-tag <name> <content>`")
-
-        const name = args[0].toLowerCase();
-        args.shift();
-        const content = args.join(" ")
-
-        const result = await this.createTag(member, name, content);
-        await message.reply(result)
-    }
-
-    async createTag(member: GuildMember, name: string, content: string) : Promise<string>{
+    async createTag(member: GuildMember, name: string, content: string, message: Message){
         if (name.includes(" ")) return "Der Tag-Name kann keine Leerzeichen enthalten"
         if (!PermissionsUtil.canExecute([process.env.MOD_ROLE], member)) {
-            let url = await PasteUtil.paste(content)
+            const text = `Du kannst keinen Tag erstellen, da du keine Rechte hast. Warte bis ein Teammitglied den **selbstgeschrieben** Tag akzeptiert.`
 
-            return `Du kannst diesen Tag nicht erstellen, da du keine Rechte besitzt! Warte bis ein Teammitglied deinen Tag erstellt oder ablehnt!` +
-                ` Beachte das dein Tag **selbstgeschrieben** sein muss! Einen Raw Version von deinem Tag wurde hier hochgeladen: ${url.replace(".md", "")}\n\n So würde dein Tag aussehen: \n${content}`
+
+            const botMessage = await message.reply(text, {components: [
+                    {
+                        type: "ACTION_ROW",
+                        components: [
+                            {
+                                type: "BUTTON",
+                                label: "Tag Request Akzeptieren",
+                                style: "SUCCESS",
+                                customID: "acceptTagRequest"
+                            },
+                            {
+                                type: "BUTTON",
+                                label: "Tag Request Ablehnen",
+                                style: "DANGER",
+                                customID: "rejectTagRequest"
+                            }
+                        ]
+                    }
+                ]})
+            await TagProvider.createTagRequest(name, content, message.member, botMessage)
+            return
         }
 
         try {
             await TagProvider.createTag(name, content)
-            return "Tag erstellt!"
+            return message.reply("Tag erstellt!")
         }catch (error) {
-            if (error.code === 11000) return  `Es existiert noch ein Tag mit dem Namen ${name}`
-            return "Der Tag konnte nicht erstellt werden"
+            if (error.code === 11000) return   message.reply(`Es existiert noch ein Tag mit dem Namen ${name}`)
+            return message.reply("Der Tag konnte nicht erstellt werden")
         }
+    }
+
+    async handleMessage(message: Message) {
+        const commandName = this.requests.get(message.author.id)
+        if (!commandName) return
+        if (message.content.length > 2000) return message.reply("Der tag ist zu lang")
+        this.requests.set(message.author.id, null)
+
+        await this.createTag(message.member, commandName, message.content, message)
     }
 }

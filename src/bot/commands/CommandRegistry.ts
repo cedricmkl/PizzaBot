@@ -1,7 +1,6 @@
-import {Client, GuildMember} from "discord.js";
+import {Client} from "discord.js";
 import Command from "./Command";
-import CommandArguments from "./CommandArguments";
-import CommandActionExecutor from "./CommandActionExecutor";
+import CommandMessageHandler from "./CommandMessageHandler";
 
 export default class CommandRegistry {
     private readonly client: Client
@@ -13,32 +12,25 @@ export default class CommandRegistry {
     }
 
     private initListener() {
-        //@ts-ignore
-        this.client.ws.on("INTERACTION_CREATE", async (interaction) => {
-            if (interaction.type !== 2) return;
-            if (interaction.guild_id !== process.env.GUILD) return;
-
-            const commandName : string = interaction.data.name;
-            const command : Command = this.commands.find(value => value.name === commandName);
-
+        this.client.on("interaction", (interaction) => {
+            if (!interaction.isCommand()) return
+            if (interaction.guild.id != process.env.GUILD) return;
+            const command: Command = this.commands.find(value => value.name === interaction.commandName)
             if (command === null) return;
+            if(!command.canExecute(interaction.member)) return interaction.reply("Du hast keine Rechte diesen Command auszuführen", {ephemeral: true});
 
-            const guild = await this.client.guilds.fetch(interaction.guild_id)
-            const member: GuildMember = await guild.members.fetch(interaction.member.user.id);
-
-            const options = interaction.data.options;
-            const commandArguments : CommandArguments = new CommandArguments();
-
-            commandArguments.parseData(options, command.params);
-
-            if(!command.canExecute(member)) return;
-
-            command.executeSlash(this.client, member, commandArguments, new CommandActionExecutor(this.client, interaction.token, interaction.id,))
+            command.executeSlash(this.client, interaction)
         })
 
         this.client.on("message", (message) => {
             if (!message.guild) return;
             if (message.author.bot) return;
+            this.commands.forEach(value => {
+                if (value instanceof CommandMessageHandler) {
+                    value.handleMessage(message)
+                }
+            })
+
             const args : string[] = message.content.split(" ");
             const name = args[0];
             const command : Command = this.commands.find(value => value.checkTextCommand(name.toLowerCase()));

@@ -1,5 +1,6 @@
 import TagModel, {Tag} from "../schema/TagModel";
-
+import {GuildMember, Message, Util} from "discord.js";
+import TagRequestSchema, {TagRequest} from "../schema/TagRequest";
 export default class TagProvider {
 
     static async getTag(name: string) : Promise<Tag>{
@@ -10,11 +11,37 @@ export default class TagProvider {
         return TagModel.exists({$or: [{name: name.toLowerCase()}, {aliases: name.toLowerCase()}]})
     }
 
-    static async createTag(name: string, content: string) : Promise<Tag>{
+    static async createTag(name: string, content: string, createdAt: Date = new Date()) : Promise<Tag>{
+        content = Util.removeMentions(content)
+        name = Util.removeMentions(name)
+
         return await TagModel.create({
             name: name,
-            content: content
+            content: content,
+            createdAt: createdAt
         });
+    }
+
+    static async createTagRequest(name: string, content: string, guildMember: GuildMember, message: Message) : Promise<TagRequest>{
+        content = Util.removeMentions(content)
+        name = Util.removeMentions(name)
+
+        return await TagRequestSchema.create(
+            {
+                createdBy: guildMember.id,
+                messageID: message.id,
+                tag: {
+                    name: name,
+                    content: content,
+                    createdAt: new Date()
+                }
+            }
+        )
+
+    }
+
+    static async getTagRequest(messageID: string) : Promise<TagRequest> {
+        return TagRequestSchema.findOne({messageID: messageID})
     }
 
     static async getTags() : Promise<Array<Tag>>{

@@ -1,8 +1,6 @@
-import Command from "../../command/Command";
+import Command from "../Command";
 import {Client, GuildMember, Message} from "discord.js";
-import {CommandParameterType} from "../../command/CommandParameterType";
-import CommandArguments from "../../command/CommandArguments";
-import CommandActionExecutor from "../../command/CommandActionExecutor";
+import {CommandParameterType} from "../CommandParameterType";
 import TagProvider from "../../provider/TagProvider";
 
 
@@ -10,18 +8,18 @@ export default class RemoveTagAliasCommand extends Command{
 
     constructor() {
         super("remove-alias", "Einen bereits existierenden Tag einen Alias entfernen", true);
-        this.withParameter("name", "Name des Tags", CommandParameterType.STRING, true)
-        this.withParameter("alias", "Der Alias des Tags", CommandParameterType.STRING, true)
+        this.withParameter({ name: "name", description: "Name des Tags", type: CommandParameterType.STRING, required: true })
+        this.withParameter({ name: "alias", description: "Der Alias des Tags", type: CommandParameterType.STRING, required: true })
         this.withRoles([process.env.MOD_ROLE])
     }
 
-    async executeSlash(client: Client, member: GuildMember, args: CommandArguments, executor: CommandActionExecutor) {
-        await executor.sendThinking()
-        const name: string = args.getArgument("name").getAsString().toLowerCase();
-        const content: string = args.getArgument("alias").getAsString().toLowerCase()
+    async executeSlash(client, command) {
+        await command.defer()
+        const name: string = command.options.find(value => value.name == "name").value
+        const alias: string = command.options.find(value => value.name == "alias").value
 
-        const result = await this.deleteTagAlias(member, name, content);
-        await executor.sendWebhookMessage(result)
+        const result = await this.deleteTagAlias(command.member, name.toLowerCase(), alias.toLowerCase());
+        await command.reply(result)
     }
 
     async executeText(client: Client, args: string[], member: GuildMember, message: Message) {

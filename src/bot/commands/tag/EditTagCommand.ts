@@ -1,8 +1,6 @@
-import Command from "../../command/Command";
+import Command from "../Command";
 import {Client, GuildMember, Message} from "discord.js";
-import {CommandParameterType} from "../../command/CommandParameterType";
-import CommandArguments from "../../command/CommandArguments";
-import CommandActionExecutor from "../../command/CommandActionExecutor";
+import {CommandParameterType} from "../CommandParameterType";
 import TagProvider from "../../provider/TagProvider";
 import PermissionsUtil from "../../../utils/PermissionsUtil";
 import PasteUtil from "../../../utils/PasteUtil";
@@ -12,17 +10,17 @@ export default class EditTagCommand extends Command{
 
     constructor() {
         super("edit-tag", "Einen bereits existierenden Tag editieren", true);
-        this.withParameter("name", "Name des Tags", CommandParameterType.STRING, true)
-        this.withParameter("content", "Content des Tags", CommandParameterType.STRING, true)
+        this.withParameter({ name: "name", description: "Name des Tags", type: CommandParameterType.STRING, required: true })
+        this.withParameter({ name: "content", description: "Content des Tags", type: CommandParameterType.STRING, required: true })
     }
 
-    async executeSlash(client: Client, member: GuildMember, args: CommandArguments, executor: CommandActionExecutor) {
-        await executor.sendThinking()
+    async executeSlash(client, command) {
+/*        await executor.sendThinking()
         const name: string = args.getArgument("name").getAsString().toLowerCase();
         const content: string = args.getArgument("content").getAsString();
 
         const result = await this.editTag(member, name, content);
-        await executor.sendWebhookMessage(result)
+        await executor.sendWebhookMessage(result)*/
     }
 
     async executeText(client: Client, args: string[], member: GuildMember, message: Message) {

@@ -1,8 +1,6 @@
-import Command from "../../command/Command";
+import Command from "../Command";
 import {Client, GuildMember, Message} from "discord.js";
-import {CommandParameterType} from "../../command/CommandParameterType";
-import CommandArguments from "../../command/CommandArguments";
-import CommandActionExecutor from "../../command/CommandActionExecutor";
+import {CommandParameterType} from "../CommandParameterType";
 import TagProvider from "../../provider/TagProvider";
 
 
@@ -10,18 +8,13 @@ export default class CreateTagAliasCommand extends Command{
 
     constructor() {
         super("create-alias", "Einen bereits existierenden Tag einen Alias hinzufügen", true);
-        this.withParameter("name", "Name des Tags", CommandParameterType.STRING, true)
-        this.withParameter("alias", "Der Alias des Tags", CommandParameterType.STRING, true)
+        this.withParameter({ name: "name", description: "Name des Tags", type: CommandParameterType.STRING, required: true })
+        this.withParameter({ name: "alias", description: "Der Alias, der für den Tag erstellt werden soll", type: CommandParameterType.STRING, required: true })
         this.withRoles([process.env.MOD_ROLE])
     }
 
-    async executeSlash(client: Client, member: GuildMember, args: CommandArguments, executor: CommandActionExecutor) {
-        await executor.sendThinking()
-        const name: string = args.getArgument("name").getAsString().toLowerCase();
-        const content: string = args.getArgument("alias").getAsString().toLowerCase()
+    async executeSlash(client, command) {
 
-        const result = await this.createTagAlias(member, name, content);
-        await executor.sendWebhookMessage(result)
     }
 
     async executeText(client: Client, args: string[], member: GuildMember, message: Message) {

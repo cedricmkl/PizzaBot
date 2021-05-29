@@ -1,11 +1,11 @@
 import * as mongoose from "mongoose";
 import {Document, Schema} from "mongoose";
 
-export interface Tag extends Document {
-    name: string,
-    createdAt: Date,
-    content: string,
-    aliases: string[],
+export class Tag extends Document {
+    name: string
+    createdAt: Date
+    content: string
+    aliases: string[]
 }
 
 const TagSchema: Schema = new Schema({
