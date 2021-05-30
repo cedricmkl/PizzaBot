@@ -1,6 +1,7 @@
 import {Client} from "discord.js";
 import ComponentListener from "./ComponentListener";
-import TagRequestComponentListener from "./components/TagRequestComponentListener";
+import TagCreateRequestComponentListener from "./components/TagCreateRequestComponentListener";
+import TagEditRequestComponentListener from "./components/TagEditRequestComponentListener";
 
 export default class ComponentRegistry {
     client: Client
@@ -18,7 +19,8 @@ export default class ComponentRegistry {
     }
 
     register() {
-        this.listeners.push(new TagRequestComponentListener())
+        this.listeners.push(new TagCreateRequestComponentListener())
+        this.listeners.push(new TagEditRequestComponentListener())
     }
 
 }

@@ -1,8 +1,9 @@
-import {GuildMember, Message, MessageEmbed, MessageResolvable, Snowflake, Util} from "discord.js";
+import {GuildMember, Message, Snowflake} from "discord.js";
 import {CommandParameterType} from "../CommandParameterType";
 import TagProvider from "../../provider/TagProvider";
 import PermissionsUtil from "../../../utils/PermissionsUtil";
 import CommandMessageHandler from "../CommandMessageHandler";
+import ComponentUtil from "../../../utils/ComponentUtil";
 
 
 export default class CreateTagCommand extends CommandMessageHandler{
@@ -25,25 +26,13 @@ export default class CreateTagCommand extends CommandMessageHandler{
             const text = `Du kannst keinen Tag erstellen, da du keine Rechte hast. Warte bis ein Teammitglied den **selbstgeschrieben** Tag akzeptiert.`
 
 
-            const botMessage = await message.reply(text, {components: [
-                    {
-                        type: "ACTION_ROW",
-                        components: [
-                            {
-                                type: "BUTTON",
-                                label: "Tag Request Akzeptieren",
-                                style: "SUCCESS",
-                                customID: "acceptTagRequest"
-                            },
-                            {
-                                type: "BUTTON",
-                                label: "Tag Request Ablehnen",
-                                style: "DANGER",
-                                customID: "rejectTagRequest"
-                            }
-                        ]
-                    }
-                ]})
+            const botMessage = await message.reply("Du kannst keinen Tag erstellen, da du keine Rechte hast. Warte bis ein Teammitglied den **selbstgeschrieben** Tag akzeptiert.",
+                {
+                    components: [ComponentUtil.acceptRejectComponent({
+                        label: "Tag Request akzeptieren",
+                        customID: "acceptTagRequest"
+                    }, {label: "Tag Request ablehnen", customID: "rejectTagRequest"})]
+                })
             await TagProvider.createTagRequest(name, content, message.member, botMessage)
             return
         }
@@ -60,7 +49,7 @@ export default class CreateTagCommand extends CommandMessageHandler{
     async handleMessage(message: Message) {
         const commandName = this.requests.get(message.author.id)
         if (!commandName) return
-        if (message.content.length > 2000) return message.reply("Der tag ist zu lang")
+        if (message.content.length > 2000) return message.reply("Der Tag ist zu lang")
         this.requests.set(message.author.id, null)
 
         await this.createTag(message.member, commandName, message.content, message)

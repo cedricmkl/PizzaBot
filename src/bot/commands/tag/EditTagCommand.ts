@@ -1,52 +1,56 @@
-import Command from "../Command";
-import {Client, GuildMember, Message} from "discord.js";
+import {GuildMember, Message, Snowflake, Util} from "discord.js";
 import {CommandParameterType} from "../CommandParameterType";
 import TagProvider from "../../provider/TagProvider";
 import PermissionsUtil from "../../../utils/PermissionsUtil";
-import PasteUtil from "../../../utils/PasteUtil";
+import ComponentUtil from "../../../utils/ComponentUtil";
+import CommandMessageHandler from "../CommandMessageHandler";
 
 
-export default class EditTagCommand extends Command{
+export default class EditTagCommand extends CommandMessageHandler {
+    requests: Map<Snowflake, string> = new Map<Snowflake, string>()
 
     constructor() {
         super("edit-tag", "Einen bereits existierenden Tag editieren", true);
-        this.withParameter({ name: "name", description: "Name des Tags", type: CommandParameterType.STRING, required: true })
-        this.withParameter({ name: "content", description: "Content des Tags", type: CommandParameterType.STRING, required: true })
+        this.withParameter({
+            name: "name",
+            description: "Name des Tags",
+            type: CommandParameterType.STRING,
+            required: true
+        })
     }
 
     async executeSlash(client, command) {
-/*        await executor.sendThinking()
-        const name: string = args.getArgument("name").getAsString().toLowerCase();
-        const content: string = args.getArgument("content").getAsString();
-
-        const result = await this.editTag(member, name, content);
-        await executor.sendWebhookMessage(result)*/
+        const name: string = command.options.find(value => value.name == "name").value
+        this.requests.set(command.user.id, name.toLowerCase())
+        await command.reply("Gebe den Content des Tags in deiner nächsten Nachricht an")
     }
 
-    async executeText(client: Client, args: string[], member: GuildMember, message: Message) {
-        if (args.length < 2) return message.channel.send("Nutze `" + process.env.PREFIX + "create-tag <name> <content>`")
-
-        const name = args[0].toLowerCase();
-        args.shift();
-        const content = args.join(" ")
-
-        const result = await this.editTag(member, name, content);
-        await message.reply(result)
-    }
-
-    async editTag(member: GuildMember, name: string, content: string) : Promise<string>{
+    async editTag(member: GuildMember, name: string, content: string, message: Message) {
         if (name.includes(" ")) return "Der Tag-Name kann keine Leerzeichen enthalten"
+        const tag = await TagProvider.getTag(name)
+        if (!tag) return message.reply("Der Tag wurde nicht gefunden")
         if (!PermissionsUtil.canExecute([process.env.MOD_ROLE], member)) {
-            let url = await PasteUtil.paste(content)
-
-            return `Du kannst diesen Tag nicht editieren, da du keine Rechte besitzt! Warte bis ein Teammitglied deinen Tag erstellt oder ablehnt!` +
-                ` Beachte das dein Tag **selbstgeschrieben** sein muss!  Einen Raw Version von deinem Tag wurde hier hochgeladen: ${url.replace(".md", "")}\n\n So würde dein Tag aussehen: \n${content}`
+            const botMessage = await message.reply("Du kannst keinen Tag editieren, da du keine Rechte hast. Warte bis ein Teammitglied den **selbstgeschrieben** Tag akzeptiert.",
+                {
+                    components: [ComponentUtil.acceptRejectComponent({
+                        label: "Tag Request akzeptieren",
+                        customID: "acceptTagRequestEdit"
+                    }, {label: "Tag Request ablehnen", customID: "rejectTagRequestEdit"})]
+                })
+            await TagProvider.createTagRequest(name, content, message.member, botMessage)
+            return
         }
+        tag.content = Util.removeMentions(content)
+        await tag.save()
+        return message.reply("Tag editiert!")
+    }
 
-        const tag = await TagProvider.getTag(name);
-        if (!tag) return "Der Tag existiert nicht"
-        tag.content = content;
-        await tag.save();
-        return "Tag erfolgreich editiert!"
+    async handleMessage(message: Message) {
+        const commandName = this.requests.get(message.author.id)
+        if (!commandName) return
+        if (message.content.length > 2000) return message.reply("Der Tag ist zu lang")
+        this.requests.set(message.author.id, null)
+
+        await this.editTag(message.member, commandName, message.content, message)
     }
 }

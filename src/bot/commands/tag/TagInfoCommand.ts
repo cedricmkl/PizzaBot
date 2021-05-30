@@ -1,5 +1,5 @@
 import Command from "../Command";
-import {Client, GuildMember, Message, MessageEmbed} from "discord.js";
+import {MessageEmbed} from "discord.js";
 import {CommandParameterType} from "../CommandParameterType";
 import TagProvider from "../../provider/TagProvider";
 
@@ -18,15 +18,6 @@ export default class TagInfoCommand extends Command{
         const result = await this.getTagInfo(name.toLowerCase())
         await command.editReply(result)
     }
-
-    async executeText(client: Client, args: string[], member: GuildMember, message: Message) {
-        if (args.length < 1) return message.channel.send("Nutze `tag <name>`")
-        const name = args[0];
-
-        const result = await this.getTagInfo(name)
-        await message.channel.send(result);
-    }
-
     async getTagInfo(name: string) : Promise<MessageEmbed | string>{
         if (name.includes(" ")) return "Der Tag-Name und der Tag-Alias kann keine Leerzeichen enthalten"
         const tag = await TagProvider.getTag(name);

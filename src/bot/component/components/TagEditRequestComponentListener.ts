@@ -3,10 +3,10 @@ import {MessageComponentInteraction} from "discord.js";
 import PermissionsUtil from "../../../utils/PermissionsUtil";
 import TagProvider from "../../provider/TagProvider";
 
-export default class TagRequestComponentListener extends ComponentListener {
+export default class TagEditRequestComponentListener extends ComponentListener {
 
     constructor() {
-        super(["acceptTagRequest", "rejectTagRequest"]);
+        super(["acceptTagRequestEdit", "rejectTagRequestEdit"]);
     }
 
     async handleInteraction(interaction: MessageComponentInteraction) {
@@ -16,21 +16,22 @@ export default class TagRequestComponentListener extends ComponentListener {
 
         const request = await TagProvider.getTagRequest(messageID)
         if (!request) return interaction.editReply("Der Tag-Request wurde bereits bearbeitet")
+        const tag = await TagProvider.getTag(request.tag.name)
+        interaction.message.edit({components: []})
+        await request.delete()
+        if (!tag) return interaction.editReply("Tag existiert nicht")
 
         switch (interaction.customID) {
-            case "acceptTagRequest": {
-                request.delete()
-                TagProvider.createTag(request.tag.name, request.tag.content, request.tag.createdAt)
-                    .then(() => interaction.editReply("Tag erfolgreich erstellt"))
-                    .catch(() => interaction.editReply("Ein Tag mit diesem namen existiert bereits"))
+            case "acceptTagRequestEdit": {
+                tag.content = request.tag.content
+                await tag.save()
+                await interaction.editReply("Tag editiert")
                 break;
             }
-            case "rejectTagRequest": {
+            case "rejectTagRequestEdit": {
                 request.delete()
                 await interaction.editReply("Tag-Request abgelehnt")
             }
         }
-        interaction.message.edit({components: []})
-
     }
 }
