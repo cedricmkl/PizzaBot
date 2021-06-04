@@ -4,6 +4,7 @@ import {Octokit} from "@octokit/rest";
 
 export default class SourceCommand extends Command {
     private github: Octokit = new Octokit();
+
     constructor() {
         super("source", "Zeigt einen Link zum Source Code und Stats an", false);
     }

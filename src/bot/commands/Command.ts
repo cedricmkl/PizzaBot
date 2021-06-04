@@ -8,7 +8,6 @@ import {
     Message
 } from "discord.js";
 import PermissionsUtil from "../../utils/PermissionsUtil";
-import {ifError} from "assert";
 
 export default abstract class Command {
     readonly name: string;
@@ -19,7 +18,7 @@ export default abstract class Command {
     roles: string[];
 
 
-    protected constructor(name: string, description: string, executeWithOutPrefix: boolean) {
+    protected constructor(name: string, description: string, executeWithOutPrefix: boolean = false) {
         this.params = [];
         this.name = name;
         this.description = description;
@@ -57,20 +56,20 @@ export default abstract class Command {
     }
 
     executeSlash(client: Client, interaction: CommandInteraction) {
-      interaction.reply("Der Command ist nicht als Slash-Command implementiert")
+        interaction.reply("Der Command ist nicht als Slash-Command implementiert")
     }
 
     executeText(client: Client, input: string[], member: GuildMember, message: Message) {
         message.reply("Der Command ist nicht als Text-Command implementiert")
     }
 
-    checkTextCommand(input: String) : boolean {
+    checkTextCommand(input: String): boolean {
         if (input.charAt(0) !== process.env.PREFIX && !this.executeWithOutPrefix) return false;
         const name = input.replace(process.env.PREFIX, "")
         return this.name === name || this.aliases.includes(name)
     }
 
-    canExecute(member: GuildMember) : boolean {
+    canExecute(member: GuildMember): boolean {
         if (this.roles.length === 0) return true;
         return PermissionsUtil.canExecute(this.roles, member);
     }

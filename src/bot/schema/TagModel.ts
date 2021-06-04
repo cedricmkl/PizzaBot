@@ -14,16 +14,16 @@ const TagSchema: Schema = new Schema({
         required: true,
         unique: true
     },
-    createdAt:{
+    createdAt: {
         type: Date,
         default: Date.now(),
         required: true
     },
-    content:{
+    content: {
         type: String,
         required: true
     },
-    aliases:{
+    aliases: {
         type: [String],
         default: [],
         required: true

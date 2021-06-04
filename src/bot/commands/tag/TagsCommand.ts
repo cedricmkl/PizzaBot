@@ -3,7 +3,7 @@ import {Client, GuildMember, Message} from "discord.js";
 import TagProvider from "../../provider/TagProvider";
 
 
-export default class TagsCommand extends Command{
+export default class TagsCommand extends Command {
 
     constructor() {
         super("tags", "Zeigt alle verfügbaren Tags an", true);
@@ -21,7 +21,7 @@ export default class TagsCommand extends Command{
         await message.channel.send(tags);
     }
 
-    async getTags() : Promise<string> {
+    async getTags(): Promise<string> {
         const tags = await TagProvider.getTags();
         return `Alle verfügbaren Tags: ${tags.map(value => "`" + value.name + "`").join(", ")}`
     }

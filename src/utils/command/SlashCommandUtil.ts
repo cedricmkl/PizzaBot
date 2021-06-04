@@ -27,7 +27,7 @@ export default class SlashCommandUtil {
         })
     }
 
-    static sendThinking(client: Client, interactionID: String, interactionToken: String){
+    static sendThinking(client: Client, interactionID: String, interactionToken: String) {
         // @ts-ignore
         return client.api.interactions(interactionID, interactionToken).callback.post({
             data: {
@@ -36,9 +36,9 @@ export default class SlashCommandUtil {
         })
     }
 
-    static sendUserMessage(client: Client, interactionID: String, interactionToken: String, message: MessageEmbed | APIMessageContentResolvable){
+    static sendUserMessage(client: Client, interactionID: String, interactionToken: String, message: MessageEmbed | APIMessageContentResolvable) {
         // @ts-ignore
-        return client.api.interactions(interactionID,interactionToken).callback.post({
+        return client.api.interactions(interactionID, interactionToken).callback.post({
             data: {
                 type: 4,
                 data: {

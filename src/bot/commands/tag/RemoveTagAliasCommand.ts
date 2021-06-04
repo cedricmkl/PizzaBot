@@ -4,12 +4,22 @@ import {CommandParameterType} from "../CommandParameterType";
 import TagProvider from "../../provider/TagProvider";
 
 
-export default class RemoveTagAliasCommand extends Command{
+export default class RemoveTagAliasCommand extends Command {
 
     constructor() {
         super("remove-alias", "Einen bereits existierenden Tag einen Alias entfernen", true);
-        this.withParameter({ name: "name", description: "Name des Tags", type: CommandParameterType.STRING, required: true })
-        this.withParameter({ name: "alias", description: "Der Alias des Tags", type: CommandParameterType.STRING, required: true })
+        this.withParameter({
+            name: "name",
+            description: "Name des Tags",
+            type: CommandParameterType.STRING,
+            required: true
+        })
+        this.withParameter({
+            name: "alias",
+            description: "Der Alias des Tags",
+            type: CommandParameterType.STRING,
+            required: true
+        })
         this.withRoles([process.env.MOD_ROLE])
     }
 

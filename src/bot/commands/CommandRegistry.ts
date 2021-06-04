@@ -5,10 +5,16 @@ import CommandMessageHandler from "./CommandMessageHandler";
 export default class CommandRegistry {
     private readonly client: Client
     private readonly commands: Command[]
+
     constructor(client: Client) {
         this.client = client;
         this.commands = []
         this.initListener();
+    }
+
+    async registerCommand(command: Command) {
+        this.commands.push(command)
+        await command.registerSlashCommand(this.client)
     }
 
     private initListener() {
@@ -16,8 +22,8 @@ export default class CommandRegistry {
             if (!interaction.isCommand()) return
             if (interaction.guild.id != process.env.GUILD) return;
             const command: Command = this.commands.find(value => value.name === interaction.commandName)
-            if (command === null) return;
-            if(!command.canExecute(interaction.member)) return interaction.reply("Du hast keine Rechte diesen Command auszuführen", {ephemeral: true});
+            if (command === null || command == undefined) return;
+            if (!command.canExecute(interaction.member)) return interaction.reply("Du hast keine Rechte diesen Command auszuführen", {ephemeral: true});
 
             command.executeSlash(this.client, interaction)
         })
@@ -31,9 +37,9 @@ export default class CommandRegistry {
                 }
             })
 
-            const args : string[] = message.content.split(" ");
+            const args: string[] = message.content.split(" ");
             const name = args[0];
-            const command : Command = this.commands.find(value => value.checkTextCommand(name.toLowerCase()));
+            const command: Command = this.commands.find(value => value.checkTextCommand(name.toLowerCase()));
             if (!command) return;
             if (!command.canExecute(message.member)) {
                 message.reply("Du kannst diesen Command nicht ausführen!")
@@ -43,10 +49,5 @@ export default class CommandRegistry {
             args.shift()
             command.executeText(this.client, args, message.member, message)
         })
-    }
-
-    async registerCommand(command: Command) {
-        this.commands.push(command)
-        await command.registerSlashCommand(this.client)
     }
 }

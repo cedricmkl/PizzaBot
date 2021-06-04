@@ -7,11 +7,11 @@ export class MutedUser extends Document {
     mutedAt: Date
     unmuteAt: Date
 
-    async unmute() : Promise<MutedUser> {
+    async unmute(): Promise<MutedUser> {
         return this.delete();
     }
 
-    isPermanent() : boolean{
+    isPermanent(): boolean {
         return !this.unmuteAt
     }
 }

@@ -6,12 +6,17 @@ import CommandMessageHandler from "../CommandMessageHandler";
 import ComponentUtil from "../../../utils/ComponentUtil";
 
 
-export default class CreateTagCommand extends CommandMessageHandler{
+export default class CreateTagCommand extends CommandMessageHandler {
     requests: Map<Snowflake, string> = new Map<Snowflake, string>()
 
     constructor() {
         super("create-tag", "Einen neuen Tag erstellen", true);
-        this.withParameter({ name: "name", description: "Name des Tags", type: CommandParameterType.STRING, required: true })
+        this.withParameter({
+            name: "name",
+            description: "Name des Tags",
+            type: CommandParameterType.STRING,
+            required: true
+        })
     }
 
     async executeSlash(client, command) {
@@ -20,7 +25,7 @@ export default class CreateTagCommand extends CommandMessageHandler{
         await command.reply("Gebe den Content des Tags in deiner nächsten Nachricht an")
     }
 
-    async createTag(member: GuildMember, name: string, content: string, message: Message){
+    async createTag(member: GuildMember, name: string, content: string, message: Message) {
         if (name.includes(" ")) return "Der Tag-Name kann keine Leerzeichen enthalten"
         if (!PermissionsUtil.canExecute([process.env.MOD_ROLE], member)) {
             const text = `Du kannst keinen Tag erstellen, da du keine Rechte hast. Warte bis ein Teammitglied den **selbstgeschrieben** Tag akzeptiert.`
@@ -40,8 +45,8 @@ export default class CreateTagCommand extends CommandMessageHandler{
         try {
             await TagProvider.createTag(name, content)
             return message.reply("Tag erstellt!")
-        }catch (error) {
-            if (error.code === 11000) return   message.reply(`Es existiert noch ein Tag mit dem Namen ${name}`)
+        } catch (error) {
+            if (error.code === 11000) return message.reply(`Es existiert noch ein Tag mit dem Namen ${name}`)
             return message.reply("Der Tag konnte nicht erstellt werden")
         }
     }

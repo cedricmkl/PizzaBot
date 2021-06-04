@@ -3,7 +3,7 @@ import {CommandParameterType} from "../CommandParameterType";
 import TagProvider from "../../provider/TagProvider";
 
 
-export default class DeleteTagCommand extends Command{
+export default class DeleteTagCommand extends Command {
 
     constructor() {
         super("delete-tag", "Einen bereits existierenden Tag löschen", true);

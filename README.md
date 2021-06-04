@@ -1,8 +1,10 @@
 # PizzaBOT
+
 Discord bot for the CoolePizza Discord server (https://discord.gg/JWUKBkP3QE)
 
 How to use it:
-- You need a MongoDB server 
+
+- You need a MongoDB server
 
 
 - Install dependencies with `npm i `

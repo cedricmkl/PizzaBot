@@ -10,8 +10,9 @@ import DeleteTagCommand from "./commands/tag/DeleteTagCommand";
 import TagInfoCommand from "./commands/tag/TagInfoCommand";
 import CreateTagAliasCommand from "./commands/tag/CreateTagAliasCommand";
 import RemoveTagAliasCommand from "./commands/tag/RemoveTagAliasCommand";
-import ComponentListener from "./component/ComponentListener";
 import ComponentRegistry from "./component/ComponentRegistry";
+import GoogleCommand from "./commands/misc/GoogleCommand";
+import ProgrammingReactionRoles from "./reactionroles/ProgrammingReactionRoles";
 
 export default class PizzaBot {
     private readonly client: Client
@@ -26,7 +27,6 @@ export default class PizzaBot {
 
     connect() {
         this.client.login(process.env.DISCORD_TOKEN);
-        this.client.guilds.cache.get("")
     }
 
     initListeners() {
@@ -37,6 +37,9 @@ export default class PizzaBot {
     }
 
     async init() {
+        //Reaction Roles
+        new ProgrammingReactionRoles(this.client)
+
         //Components
         this.componentRegistry = new ComponentRegistry(this.client)
 
@@ -51,5 +54,7 @@ export default class PizzaBot {
         await this.commandRegistry.registerCommand(new TagInfoCommand())
         await this.commandRegistry.registerCommand(new CreateTagAliasCommand())
         await this.commandRegistry.registerCommand(new RemoveTagAliasCommand())
+        await this.commandRegistry.registerCommand(new GoogleCommand())
+
     }
 }

@@ -1,10 +1,9 @@
 import * as mongoose from "mongoose";
 import {Document, Schema} from "mongoose";
-import TagModel, {Tag} from "./TagModel";
 
 export class TagRequest extends Document {
     createdBy: string
-    tag: {name: string, content: string, createdAt: Date}
+    tag: { name: string, content: string, createdAt: Date }
     messageID: string
 }
 
@@ -13,7 +12,7 @@ const TagRequestSchema: Schema = new Schema({
         type: String,
         required: true
     },
-    tag:{
+    tag: {
         type: {name: String, content: String, createdAt: Date},
         required: true
     },
