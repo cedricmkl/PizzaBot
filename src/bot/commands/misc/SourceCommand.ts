@@ -32,7 +32,7 @@ export default class SourceCommand extends Command {
         });
 
         const githubData = await this.github.rest.repos.get({owner: data.user, repo: data.repo});
-        if (!githubData.data) return embed;
+        if (!githubData?.data?.stargazers_count) return embed;
         embed.setFooter(`${data.user}/${data.repo}`)
         embed.setAuthor(githubData.data.owner.login, githubData.data.owner.avatar_url, githubData.data.owner.url)
         embed.addFields([
