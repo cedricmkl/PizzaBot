@@ -29,7 +29,7 @@ export default class RemoveTagAliasCommand extends Command {
         const alias: string = command.options.find(value => value.name == "alias").value
 
         const result = await this.removeTagAlias(command.member, name.toLowerCase(), alias.toLowerCase());
-        await command.reply(result)
+        await command.editReply(result)
     }
 
     async removeTagAlias(member: GuildMember, name: string, alias: string): Promise<string> {
