@@ -30,19 +30,6 @@ export default class TagCommand extends Command {
         if (args.length < 1) return message.channel.send("Nutze `tag <name>`")
         const name = args[0];
 
-        //Komischer Code von Domme
-        if (name.toLowerCase() === "domme") {
-            const dommeEmbed = new Discord.MessageEmbed()
-                .setColor('#FFFF00')
-                .setTitle('Domme')
-                .setDescription('Der is schon cool oder')
-                .addFields(
-                    {name: 'Versuch mal den Tag zu löschen pepeLaugh', value: 'GEHT NICHT ROFL LUL HAHAHAHA funny ik'}
-                )
-                .setTimestamp()
-                .setFooter(' Gebt. Domme. Geld.')
-            return await message.channel.send(dommeEmbed);
-        }
         const result = await this.getTag(name)
         await message.channel.send(result);
     }
