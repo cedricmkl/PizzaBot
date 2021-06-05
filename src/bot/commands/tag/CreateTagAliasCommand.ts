@@ -6,7 +6,7 @@ import TagProvider from "../../provider/TagProvider";
 export default class CreateTagAliasCommand extends Command {
 
     constructor() {
-        super("create-alias", "Einen bereits existierenden Tag einen Alias hinzufügen", true);
+        super("create-alias", "Einen bereits existierenden Tag einen Alias hinzufügen", false);
         this.withParameter({
             name: "name",
             description: "Name des Tags",

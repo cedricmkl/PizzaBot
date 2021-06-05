@@ -7,7 +7,7 @@ import TagProvider from "../../provider/TagProvider";
 export default class TagInfoCommand extends Command {
 
     constructor() {
-        super("tag-info", "Informationen zu einem Tag anfordern", true);
+        super("tag-info", "Informationen zu einem Tag anfordern", false);
         this.withParameter({
             name: "name",
             description: "Name des Tags",

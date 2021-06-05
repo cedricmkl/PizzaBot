@@ -10,7 +10,7 @@ export default class CreateTagCommand extends CommandMessageHandler {
     requests: Map<Snowflake, string> = new Map<Snowflake, string>()
 
     constructor() {
-        super("create-tag", "Einen neuen Tag erstellen", true);
+        super("create-tag", "Einen neuen Tag erstellen", false);
         this.withParameter({
             name: "name",
             description: "Name des Tags",

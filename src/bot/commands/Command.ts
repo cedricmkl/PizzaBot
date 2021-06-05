@@ -55,11 +55,11 @@ export default abstract class Command {
         if (permissions.length != 0) await command.setPermissions(permissions)
     }
 
-    executeSlash(client: Client, interaction: CommandInteraction) {
+    async executeSlash(client: Client, interaction: CommandInteraction) : Promise<any | void>  {
         interaction.reply("Der Command ist nicht als Slash-Command implementiert")
     }
 
-    executeText(client: Client, input: string[], member: GuildMember, message: Message) {
+    async executeText(client: Client, input: string[], member: GuildMember, message: Message) : Promise<any | void> {
         message.reply("Der Command ist nicht als Text-Command implementiert")
     }
 

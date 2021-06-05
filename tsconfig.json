@@ -4,6 +4,7 @@
     "module": "commonjs",
     "sourceMap": true,
     "outDir": "build",
+    "skipLibCheck": true,
     "lib": [
       "dom",
       "es5",

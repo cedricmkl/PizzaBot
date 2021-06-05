@@ -6,7 +6,7 @@ import TagProvider from "../../provider/TagProvider";
 export default class DeleteTagCommand extends Command {
 
     constructor() {
-        super("delete-tag", "Einen bereits existierenden Tag löschen", true);
+        super("delete-tag", "Einen bereits existierenden Tag löschen", false);
         this.withParameter({
             name: "name",
             description: "Name des Tags",
@@ -18,7 +18,7 @@ export default class DeleteTagCommand extends Command {
 
     async executeSlash(client, command) {
         await command.defer()
-        const name: string = command.options.find(value => value.name == "name")
+        const name: string = command.options.find(value => value.name == "name").value
         const result = await this.deleteTag(name);
         await command.editReply(result)
     }

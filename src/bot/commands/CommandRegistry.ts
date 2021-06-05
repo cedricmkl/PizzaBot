@@ -1,10 +1,11 @@
-import {Client} from "discord.js";
+import {Client, MessageEmbed} from "discord.js";
 import Command from "./Command";
 import CommandMessageHandler from "./CommandMessageHandler";
+import PasteUtil from "../../utils/PasteUtil";
 
 export default class CommandRegistry {
     private readonly client: Client
-    private readonly commands: Command[]
+    readonly commands: Command[]
 
     constructor(client: Client) {
         this.client = client;
@@ -14,7 +15,9 @@ export default class CommandRegistry {
 
     async registerCommand(command: Command) {
         this.commands.push(command)
-        await command.registerSlashCommand(this.client)
+        if (process.env.UPDATE_COMMANDS == "true") {
+            await command.registerSlashCommand(this.client)
+        }
     }
 
     private initListener() {
@@ -22,10 +25,14 @@ export default class CommandRegistry {
             if (!interaction.isCommand()) return
             if (interaction.guild.id != process.env.GUILD) return;
             const command: Command = this.commands.find(value => value.name === interaction.commandName)
-            if (command === null || command == undefined) return;
+            if (!command) return;
             if (!command.canExecute(interaction.member)) return interaction.reply("Du hast keine Rechte diesen Command auszuführen", {ephemeral: true});
 
-            command.executeSlash(this.client, interaction)
+            command.executeSlash(this.client, interaction).catch(async reason => {
+                const paste = await PasteUtil.paste(reason)
+                const embed = new MessageEmbed({title: "Fehler beim ausführen des Commands", description: `Fehler wurde hier hochgeladen: ${paste}`, color: "RED"})
+                await interaction.editReply(embed).catch(reason1 => console.log(reason1))
+            })
         })
 
         this.client.on("message", (message) => {
@@ -47,7 +54,10 @@ export default class CommandRegistry {
             }
 
             args.shift()
-            command.executeText(this.client, args, message.member, message)
+            command.executeText(this.client, args, message.member, message).catch(async reason => {
+                const paste = await PasteUtil.paste(reason)
+                await message.channel.send(new MessageEmbed({title: "Fehler beim ausführen des Commands", description: `Fehler wurde hier hochgeladen: ${paste}`, color: "RED"}))
+            })
         })
     }
 }

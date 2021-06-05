@@ -35,7 +35,7 @@ export default class GoogleCommand extends Command {
             if (error) {
                 const paste = await PasteUtil.paste(error)
                 return interaction.editReply(new MessageEmbed({
-                    title: "Fehler beim ausführen dieses Comands",
+                    title: "Fehler beim ausführen dieses Commands",
                     description: `Ich habe den Fehler hier hochgeladen: ${paste}`,
                     color: "RED"
                 }))

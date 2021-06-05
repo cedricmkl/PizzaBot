@@ -55,6 +55,5 @@ export default class PizzaBot {
         await this.commandRegistry.registerCommand(new CreateTagAliasCommand())
         await this.commandRegistry.registerCommand(new RemoveTagAliasCommand())
         await this.commandRegistry.registerCommand(new GoogleCommand())
-
     }
 }

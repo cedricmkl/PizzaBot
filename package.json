@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc --project tsconfig.json",
     "dev": "nodemon -r dotenv/config src/main.ts dotenv_config_path=.env.development",
-    "start": "node -r dotenv/config ./build/main.js dotenv_config_path=.env.production"
+    "start": "node -r dotenv/config ./build/main.js dotenv_config_path=.env.production",
+    "devStart": "node -r dotenv/config ./build/main.js dotenv_config_path=.env.development"
   },
   "keywords": [],
   "author": "",

@@ -10,7 +10,7 @@ export default class EditTagCommand extends CommandMessageHandler {
     requests: Map<Snowflake, string> = new Map<Snowflake, string>()
 
     constructor() {
-        super("edit-tag", "Einen bereits existierenden Tag editieren", true);
+        super("edit-tag", "Einen bereits existierenden Tag editieren", false);
         this.withParameter({
             name: "name",
             description: "Name des Tags",

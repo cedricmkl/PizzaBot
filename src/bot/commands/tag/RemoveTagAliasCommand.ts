@@ -7,7 +7,7 @@ import TagProvider from "../../provider/TagProvider";
 export default class RemoveTagAliasCommand extends Command {
 
     constructor() {
-        super("remove-alias", "Einen bereits existierenden Tag einen Alias entfernen", true);
+        super("remove-alias", "Einen bereits existierenden Tag einen Alias entfernen", false);
         this.withParameter({
             name: "name",
             description: "Name des Tags",
