@@ -1,10 +1,7 @@
 import Command from "../Command";
-import {Client, GuildMember, Message} from "discord.js";
+import {Client, GuildMember, Message, MessageEmbed} from "discord.js";
 import {CommandParameterType} from "../CommandParameterType";
 import TagProvider from "../../provider/TagProvider";
-
-const Discord = require("discord.js")
-
 
 export default class TagCommand extends Command {
 
@@ -30,28 +27,32 @@ export default class TagCommand extends Command {
         if (args.length < 1) return message.channel.send("Nutze `tag <name>`")
         const name = args[0];
 
-        //Komischer Code von Domme
-        if (name.toLowerCase() === "domme") {
-            const dommeEmbed = new Discord.MessageEmbed()
-                .setColor('#FFFF00')
-                .setTitle('Domme')
-                .setDescription('Der is schon cool oder')
-                .addFields(
-                    {name: 'Versuch mal den Tag zu löschen pepeLaugh', value: 'GEHT NICHT ROFL LUL HAHAHAHA funny ik'}
-                )
-                .setTimestamp()
-                .setFooter(' Gebt. Domme. Geld.')
-            return await message.channel.send(dommeEmbed);
-        }
         const result = await this.getTag(name)
         await message.channel.send(result);
     }
 
-    async getTag(name: string): Promise<string> {
-        if (name.includes(" ")) return "Der Tag-Name kann keine Leerzeichen enthalten"
-        const tag = await TagProvider.getTag(name);
-        if (!tag) return "Der Tag existiert nicht"
-        return tag.content
+    async getTag(name: string): Promise<string | MessageEmbed> {
+        switch (name.toLowerCase()) {
+            case "domme": {
+                return new MessageEmbed({
+                    title: "Domme",
+                    description: "Der is schon cool oder",
+                    color: "#FFFF00",
+                    timestamp: Date.now(),
+                    fields: [{
+                        name: 'Versuch mal den Tag zu löschen pepeLaugh',
+                        value: 'GEHT NICHT ROFL LUL HAHAHAHA funny ik'
+                    }
+                    ],
+                    footer: {text: "Gebt. Domme. Geld."}
+                })
+            }
+            default: {
+                const tag = await TagProvider.getTag(name);
+                if (!tag) return "Der Tag existiert nicht"
+                return tag.content
+            }
+        }
     }
 
 }

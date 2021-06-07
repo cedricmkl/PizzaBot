@@ -4,8 +4,8 @@ import CommandMessageHandler from "./CommandMessageHandler";
 import PasteUtil from "../../utils/PasteUtil";
 
 export default class CommandRegistry {
-    private readonly client: Client
     readonly commands: Command[]
+    private readonly client: Client
 
     constructor(client: Client) {
         this.client = client;
@@ -30,7 +30,11 @@ export default class CommandRegistry {
 
             command.executeSlash(this.client, interaction).catch(async reason => {
                 const paste = await PasteUtil.paste(reason)
-                const embed = new MessageEmbed({title: "Fehler beim ausführen des Commands", description: `Fehler wurde hier hochgeladen: ${paste}`, color: "RED"})
+                const embed = new MessageEmbed({
+                    title: "Fehler beim ausführen des Commands",
+                    description: `Fehler wurde hier hochgeladen: ${paste}`,
+                    color: "RED"
+                })
                 await interaction.editReply(embed).catch(reason1 => console.log(reason1))
             })
         })
@@ -56,7 +60,11 @@ export default class CommandRegistry {
             args.shift()
             command.executeText(this.client, args, message.member, message).catch(async reason => {
                 const paste = await PasteUtil.paste(reason)
-                await message.channel.send(new MessageEmbed({title: "Fehler beim ausführen des Commands", description: `Fehler wurde hier hochgeladen: ${paste}`, color: "RED"}))
+                await message.channel.send(new MessageEmbed({
+                    title: "Fehler beim ausführen des Commands",
+                    description: `Fehler wurde hier hochgeladen: ${paste}`,
+                    color: "RED"
+                }))
             })
         })
     }

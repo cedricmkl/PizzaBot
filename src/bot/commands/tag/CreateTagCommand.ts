@@ -28,9 +28,6 @@ export default class CreateTagCommand extends CommandMessageHandler {
     async createTag(member: GuildMember, name: string, content: string, message: Message) {
         if (name.includes(" ")) return "Der Tag-Name kann keine Leerzeichen enthalten"
         if (!PermissionsUtil.canExecute([process.env.MOD_ROLE], member)) {
-            const text = `Du kannst keinen Tag erstellen, da du keine Rechte hast. Warte bis ein Teammitglied den **selbstgeschrieben** Tag akzeptiert.`
-
-
             const botMessage = await message.reply("Du kannst keinen Tag erstellen, da du keine Rechte hast. Warte bis ein Teammitglied den **selbstgeschrieben** Tag akzeptiert.",
                 {
                     components: [ComponentUtil.acceptRejectComponent({
