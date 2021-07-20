@@ -70,15 +70,8 @@ export default abstract class SlashCommand {
                 params.push(value)
             }
         })
-        console.log(params)
 
         const guild: Guild = await client.guilds.cache.get(process.env.GUILD as Snowflake)
-        console.log({
-            name: this.name,
-            description: this.description,
-            defaultPermission: this.roles.length == 0,
-            options: params
-        })
         const command = await guild.commands.create({
             name: this.name,
             description: this.description,
