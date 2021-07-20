@@ -6,6 +6,7 @@ export class Tag extends Document {
     createdAt: Date
     content: string
     aliases: string[]
+
 }
 
 const TagSchema: Schema = new Schema({

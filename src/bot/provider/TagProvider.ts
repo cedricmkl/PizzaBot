@@ -1,4 +1,5 @@
-import TagModel, {Tag} from "../schema/TagModel";
+import TagModel from "../schema/TagModel";
+import TagSchema, {Tag} from "../schema/TagModel";
 import {GuildMember, Message, Util} from "discord.js";
 import TagRequestSchema, {TagRequest} from "../schema/TagRequest";
 
@@ -39,6 +40,14 @@ export default class TagProvider {
             }
         )
 
+    }
+
+    static async createOrEditTag(tagRequest: TagRequest) {
+        await TagSchema.updateOne({name: tagRequest.tag.name}, {
+            name: tagRequest.tag.name,
+            content: tagRequest.tag.content
+        }, {upsert: true, setDefaultsOnInsert: true})
+        await tagRequest.delete()
     }
 
     static async getTagRequest(messageID: string): Promise<TagRequest> {
