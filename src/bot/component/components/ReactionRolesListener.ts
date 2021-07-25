@@ -2,7 +2,7 @@ import ButtonListener from "../ButtonListener";
 import {ButtonInteraction, GuildMember, MessageActionRow, MessageButton, Snowflake} from "discord.js";
 
 export default class ReactionRolesListener extends ButtonListener {
-    reactionRoles: Array<ReactionRole> = require("../../../../data/reactionRoles.json")
+    reactionRoles: ReactionRoleConfig = require("../../../../data/reactionRoles.json")
 
     constructor() {
         super("reactionRole");
@@ -11,6 +11,7 @@ export default class ReactionRolesListener extends ButtonListener {
     async handleInteraction(interaction: ButtonInteraction, value: string) {
         const member = interaction.member as GuildMember
         if (value == "create") {
+            if (!member.roles.cache.has(this.reactionRoles.partingLineRole)) await member.roles.add(this.reactionRoles.partingLineRole)
             interaction.reply({
                 content: "Klicke auf die Buttons um dir Rollen zu geben oder entfernen",
                 components: this.buildButtons(interaction.member as GuildMember),
@@ -35,7 +36,7 @@ export default class ReactionRolesListener extends ButtonListener {
         const actionRows: Array<MessageActionRow> = [new MessageActionRow()]
 
         let row = 0
-        this.reactionRoles.forEach(value => {
+        this.reactionRoles.roles.forEach(value => {
             if (actionRows[row].components.length >= 5) {
                 actionRows.push(new MessageActionRow())
                 row++
@@ -69,4 +70,9 @@ interface ReactionRole {
     emoji: string,
     role: Snowflake,
     name: string
+}
+
+interface ReactionRoleConfig {
+    roles: Array<ReactionRole>,
+    partingLineRole: Snowflake,
 }
