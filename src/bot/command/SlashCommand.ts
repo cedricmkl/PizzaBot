@@ -10,6 +10,7 @@ import {
 } from "discord.js";
 import PermissionsUtil from "../../utils/PermissionsUtil";
 import SlashCommandArgument from "./SlashCommandArgument";
+import SlashSubCommandGroupArgument from "./SlashSubCommandGroupArgument";
 
 export default abstract class SlashCommand {
     readonly name: string;
@@ -103,9 +104,9 @@ export default abstract class SlashCommand {
         let hasPermission = true
 
         if (SlashCommand.hasSubCommandGroup(interaction.options)) {
-            const subCommand: SlashCommandArgument = this.arguments
-                .filter(value1 => value1 instanceof SlashCommandArgument)
-                .find(value2 => (value2 as SlashCommandArgument).name == interaction.options.getSubCommandGroup()) as SlashCommandArgument
+            const subCommand: SlashSubCommandGroupArgument = this.arguments
+                .filter(value1 => value1 instanceof SlashSubCommandGroupArgument)
+                .find(value2 => (value2 as SlashSubCommandGroupArgument).name == interaction.options.getSubCommandGroup()) as SlashSubCommandGroupArgument
             if (subCommand && !subCommand.hasPermission(interaction.member as GuildMember)) {
                 hasPermission = false
             }
