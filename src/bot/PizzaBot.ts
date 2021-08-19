@@ -40,16 +40,13 @@ export default class PizzaBot {
 
         //Commands
         const commandRegistry = new CommandRegistry(this.client)
-        await commandRegistry.registerSlashCommand(new TagCommand())
-        await commandRegistry.registerSlashCommand(new TagsCommand())
-        await commandRegistry.registerSlashCommand(new GoogleCommand())
-        await commandRegistry.registerSlashCommand(new SourceCommand())
-
-
-        await commandRegistry.registerTextCommand(new TagTextCommand())
-        await commandRegistry.registerTextCommand(new TagsTextCommand())
-        await commandRegistry.registerTextCommand(new MessageTextCommand())
-
-
+        commandRegistry.addCommand(new TagCommand())
+        commandRegistry.addCommand(new TagsCommand())
+        commandRegistry.addCommand(new GoogleCommand())
+        commandRegistry.addCommand(new SourceCommand())
+        commandRegistry.registerTextCommand(new TagTextCommand())
+        commandRegistry.registerTextCommand(new TagsTextCommand())
+        commandRegistry.registerTextCommand(new MessageTextCommand())
+        if (process.env.UPDATE_COMMANDS == "true") await commandRegistry.registerCommands()
     }
 }

@@ -1,4 +1,4 @@
-import {Client, MessageEmbed} from "discord.js";
+import {ApplicationCommand, Client, Collection, MessageEmbed, Snowflake} from "discord.js";
 import SlashCommand from "./SlashCommand";
 import PasteUtil from "../../utils/PasteUtil";
 import TextCommand from "./TextCommand";
@@ -14,14 +14,11 @@ export default class CommandRegistry {
         this.initListener();
     }
 
-    async registerSlashCommand(command: SlashCommand) {
+    addCommand(command: SlashCommand) {
         this.slashCommands.push(command)
-        if (process.env.UPDATE_COMMANDS == "true") {
-            await command.register(this.client)
-        }
     }
 
-    async registerTextCommand(command: TextCommand) {
+    registerTextCommand(command: TextCommand) {
         this.textCommands.push(command)
     }
 
@@ -43,7 +40,6 @@ export default class CommandRegistry {
                         description: `Fehler wurde hier hochgeladen: ${paste}`,
                         color: "RED"
                     })
-                    await interaction.fetchReply()
                     if (interaction.replied || interaction.deferred) {
                         await interaction.editReply({embeds: [embed]})
                     } else {
@@ -77,5 +73,17 @@ export default class CommandRegistry {
                 })
             })
         })
+    }
+
+    async registerCommands() {
+        const guild = this.client.guilds.cache.get(process.env.GUILD as Snowflake);
+        const commands: Collection<Snowflake, ApplicationCommand> = await guild.commands.set([
+            // @ts-ignore
+            this.slashCommands.map(value => value.build())
+        ])
+        commands.forEach(value =>
+            this.slashCommands.find(command => command.name === value.name)?.registerPermissions(value)
+        )
+
     }
 }

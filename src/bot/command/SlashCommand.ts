@@ -1,92 +1,40 @@
 import {
-    ApplicationCommandOptionData,
+    ApplicationCommand,
+    ApplicationCommandData,
     ApplicationCommandPermissionData,
-    Client,
     CommandInteraction,
-    CommandInteractionOptionResolver,
-    Guild,
     GuildMember,
     Snowflake
 } from "discord.js";
 import PermissionsUtil from "../../utils/PermissionsUtil";
-import SlashCommandArgument from "./SlashCommandArgument";
-import SlashSubCommandGroupArgument from "./SlashSubCommandGroupArgument";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
 export default abstract class SlashCommand {
     readonly name: string;
-    readonly description: string;
-    arguments: ApplicationCommandOptionData[] | SlashCommandArgument[];
-    roles: string[];
+    readonly permittedRoles: Snowflake[] = []
+    private data: SlashCommandBuilder;
 
-
-    protected constructor(name: string, description: string) {
-        this.arguments = [];
-        this.name = name;
-        this.description = description;
-        this.roles = [];
+    protected constructor(data: SlashCommandBuilder) {
+        this.data = data;
+        this.name = data.name
     }
 
-    static hasSubCommand(options: CommandInteractionOptionResolver): boolean {
-        try {
-            options.getSubCommand()
-            return true
-        } catch {
-            return false
+    build(): ApplicationCommandData {
+        // @ts-ignore
+        return {
+            ...this.data.toJSON(),
+            defaultPermission: this.permittedRoles.length == 0
         }
     }
 
-    static hasSubCommandGroup(options: CommandInteractionOptionResolver): boolean {
-        try {
-            options.getSubCommandGroup()
-            return true
-        } catch {
-            return false
-        }
-    }
 
-    static getSubCommandGroupOrSubCommand(options: CommandInteractionOptionResolver): string | null {
-        return this.hasSubCommandGroup(options) ? options.getSubCommandGroup()
-            : (this.hasSubCommand(options) ? options.getSubCommand() : null)
-    }
+    async registerPermissions(command: ApplicationCommand) {
 
-    withPermittedRoles(roles: string[]) {
-        this.roles = roles;
-    }
-
-    withArgument(argument: SlashCommandArgument | ApplicationCommandOptionData) {
-        this.arguments = [...this.arguments, argument]
-    }
-
-    withArguments(args: Array<SlashCommandArgument | ApplicationCommandOptionData>) {
-        this.arguments = [...this.arguments, ...args]
-    }
-
-    async register(client: Client) {
-        const params: ApplicationCommandOptionData[] = []
-
-        this.arguments.forEach(value => {
-            if (value instanceof SlashCommandArgument) {
-                params.push(value.build())
-            } else {
-                params.push(value)
-            }
-        })
-
-        const guild: Guild = await client.guilds.cache.get(process.env.GUILD as Snowflake)
-        const command = await guild.commands.create({
-            name: this.name,
-            description: this.description,
-            defaultPermission: this.roles.length == 0,
-            options: params
-        })
-
-        if (!command) return
-        if (this.roles.length == 0) return
         const mappedPermissions: ApplicationCommandPermissionData[] = []
 
-        this.roles.forEach(value => {
+        this.permittedRoles.forEach(value => {
             mappedPermissions.push({
-                id: value as Snowflake,
+                id: value,
                 type: "ROLE",
                 permission: true
             })
@@ -100,28 +48,7 @@ export default abstract class SlashCommand {
     abstract execute(interaction: CommandInteraction)
 
     canExecute(interaction: CommandInteraction): boolean {
-        if (!PermissionsUtil.canExecute(this.roles, interaction.member as GuildMember)) return false
-        let hasPermission = true
-
-        if (SlashCommand.hasSubCommandGroup(interaction.options)) {
-            const subCommand: SlashSubCommandGroupArgument = this.arguments
-                .filter(value1 => value1 instanceof SlashSubCommandGroupArgument)
-                .find(value2 => (value2 as SlashSubCommandGroupArgument).name == interaction.options.getSubCommandGroup()) as SlashSubCommandGroupArgument
-            if (subCommand && !subCommand.hasPermission(interaction.member as GuildMember)) {
-                hasPermission = false
-            }
-        }
-
-        if (SlashCommand.hasSubCommand(interaction.options)) {
-            const subCommand: SlashCommandArgument = this.arguments
-                .filter(value1 => value1 instanceof SlashCommandArgument)
-                .find(value2 => (value2 as SlashCommandArgument).name == interaction.options.getSubCommand()) as SlashCommandArgument
-            if (subCommand && !subCommand.hasPermission(interaction.member as GuildMember)) {
-                hasPermission = false
-            }
-        }
-
-        return hasPermission
+        return PermissionsUtil.canExecute(this.permittedRoles, interaction.member as GuildMember)
     }
 
 

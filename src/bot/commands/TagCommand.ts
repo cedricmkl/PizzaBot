@@ -9,12 +9,19 @@ import Embed from "../../utils/Embed";
 import UserInputUtil from "../../utils/UserInputUtil";
 import PermissionsUtil from "../../utils/PermissionsUtil";
 import ComponentUtil from "../../utils/ComponentUtil";
+import {SlashCommandBuilder} from "@discordjs/builders";
+import {SlashCommandSubcommandBuilder} from "@discordjs/builders/dist/interactions/slashCommands/SlashCommandSubcommands";
 
 export default class TagCommand extends SlashCommand {
 
 
     constructor() {
-        super("tag", "Tags")
+        super(
+            new SlashCommandBuilder()
+                .setName("tag")
+                .setDescription("Tags Command")
+                .addSubcommand(subCommand => this.buildTagSubCommand(subCommand, "tag", "Einen Tag anzeigen"))
+                .addSubcommand(subCommand => this.buildTagSubCommand(subCommand, "info", "Informationen über einen Tag ausgeben"))
 
         this.withArguments([
             this.tagSubCommand("tag",
@@ -337,5 +344,14 @@ export default class TagCommand extends SlashCommand {
 
     private formatName(name: string): string {
         return name.toLowerCase().replace(" ", "-")
+    }
+
+
+    private buildTagSubCommand(builder: SlashCommandSubcommandBuilder, name: string, description: string): SlashCommandSubcommandBuilder {
+        return builder.setName(name)
+            .setDescription(description)
+            .addStringOption(stringOption =>
+            stringOption.setName("name")
+                .setDescription("Der Name des Tags"))
     }
 }
