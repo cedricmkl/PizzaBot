@@ -16,44 +16,52 @@ export default class TagCommand extends SlashCommand {
 
 
     constructor() {
-        super(
-            new SlashCommandBuilder()
-                .setName("tag")
-                .setDescription("Tags Command")
-                .addSubcommand(subCommand => this.buildTagSubCommand(subCommand, "tag", "Einen Tag anzeigen"))
-                .addSubcommand(subCommand => this.buildTagSubCommand(subCommand, "info", "Informationen über einen Tag ausgeben"))
+        super(new SlashCommandBuilder().setName("tag").setDescription("Tag Command"))
+        this.builder.addSubcommand(subCommand =>
+            this.buildTagSubCommand(subCommand, "tag", "Einen Tag ausgeben"))
+            .addSubcommand(subCommand =>
+                this.buildTagSubCommand(subCommand, "info", "Informationen über einen Tag ausgeben"))
+            .addSubcommand(subCommand =>
+                this.buildTagSubCommand(subCommand, "create", "Einen Tag erstellen"))
+            .addSubcommand(subCommand =>
+                this.buildTagSubCommand(subCommand, "edit", "Einen Tag editieren"))
+            .addSubcommand(subCommand =>
+                this.buildTagSubCommand(subCommand, "delete", "Einen Tag löschen"))
 
-        this.withArguments([
-            this.tagSubCommand("tag",
-                "Einen Tag ausgeben",
-                []),
-            this.tagSubCommand("info",
-                "Informationen über einen Tag ausgeben",
-                []),
-            this.tagSubCommand("create",
-                "Einen Tag erstellen",
-                []),
-            this.tagSubCommand("edit",
-                "Einen Tag editieren",
-                []),
-            this.tagSubCommand("delete",
-                "Einen Tag löschen",
-                [], [process.env.MOD_ROLE as Snowflake]),
-            new SlashSubCommandGroupArgument("alias", "Aliases für Tags", [
-                this.tagSubCommand("create",
-                    "Einen Alias erstellen",
-                    [new SlashCommandArgument("STRING", "alias", "Der Alias")]),
-                this.tagSubCommand("remove",
-                    "Einen Alias löschen",
-                    [new SlashCommandArgument("STRING", "alias", "Der Alias")]),
-            ], [process.env.MOD_ROLE as Snowflake])
-        ])
+        this.builder.addSubcommandGroup(subcommandGroup =>
+            subcommandGroup.setName("alias")
+                .setDescription("Aliases für Tags")
+                .addSubcommand(subCommand => {
+                    return subCommand.setName("create")
+                        .setDescription("Einen Alias erstellen")
+                        .addStringOption(stringOption =>
+                            stringOption.setName("tag")
+                                .setDescription("Der Tag")
+                                .setRequired(true))
+                        .addStringOption(stringOption =>
+                            stringOption.setName("alias")
+                                .setDescription("Der Alias")
+                                .setRequired(true))
+                })
+                .addSubcommand(subCommand => {
+                    return subCommand.setName("remove")
+                        .setDescription("Einen Alias löschen")
+                        .addStringOption(stringOption =>
+                            stringOption.setName("tag")
+                                .setDescription("Der Tag")
+                                .setRequired(true))
+                        .addStringOption(stringOption =>
+                            stringOption.setName("alias")
+                                .setDescription("Der Alias")
+                                .setRequired(true))
+                })
+        )
     }
 
     async execute(interaction: CommandInteraction): Promise<any> {
-        await interaction.defer()
+        await interaction.deferReply()
 
-        switch (SlashCommand.getSubCommandGroupOrSubCommand(interaction.options)) {
+        switch (interaction.options.getSubcommand(false) || interaction.options.getSubcommandGroup(false)) {
             case "tag":
                 return this.tag(interaction)
             case "info":
@@ -70,7 +78,7 @@ export default class TagCommand extends SlashCommand {
     }
 
     private async tagAlias(interaction: CommandInteraction) {
-        const subCommand = interaction.options.getSubCommand()
+        const subCommand = interaction.options.getSubcommand()
         const tag = await this.getTag(interaction)
         const alias = interaction.options.getString("alias")
         if (!tag) return interaction.editReply({
@@ -351,7 +359,7 @@ export default class TagCommand extends SlashCommand {
         return builder.setName(name)
             .setDescription(description)
             .addStringOption(stringOption =>
-            stringOption.setName("name")
-                .setDescription("Der Name des Tags"))
+                stringOption.setName("name")
+                    .setDescription("Der Name des Tags"))
     }
 }

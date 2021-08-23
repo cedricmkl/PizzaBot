@@ -12,17 +12,17 @@ import {SlashCommandBuilder} from "@discordjs/builders";
 export default abstract class SlashCommand {
     readonly name: string;
     readonly permittedRoles: Snowflake[] = []
-    private data: SlashCommandBuilder;
+    protected builder: SlashCommandBuilder;
 
     protected constructor(data: SlashCommandBuilder) {
-        this.data = data;
+        this.builder = data;
         this.name = data.name
     }
 
     build(): ApplicationCommandData {
         // @ts-ignore
         return {
-            ...this.data.toJSON(),
+            ...this.builder.toJSON(),
             defaultPermission: this.permittedRoles.length == 0
         }
     }
