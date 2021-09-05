@@ -31,12 +31,8 @@ export default class PizzaBot {
     }
 
     async init() {
-        //Reaction Roles
-        //new ProgrammingReactionRoles(this.client)
-
         //Components
         new ButtonRegistry(this.client)
-
 
         //Commands
         const commandRegistry = new CommandRegistry(this.client)
@@ -44,9 +40,9 @@ export default class PizzaBot {
         commandRegistry.addCommand(new TagsCommand())
         commandRegistry.addCommand(new GoogleCommand())
         commandRegistry.addCommand(new SourceCommand())
-        commandRegistry.registerTextCommand(new TagTextCommand())
-        commandRegistry.registerTextCommand(new TagsTextCommand())
-        commandRegistry.registerTextCommand(new MessageTextCommand())
+        commandRegistry.addTextCommand(new TagTextCommand())
+        commandRegistry.addTextCommand(new TagsTextCommand())
+        commandRegistry.addTextCommand(new MessageTextCommand())
         if (process.env.UPDATE_COMMANDS == "true") await commandRegistry.registerCommands()
     }
 }

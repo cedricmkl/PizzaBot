@@ -1,22 +1,18 @@
 import SlashCommand from "../command/SlashCommand";
 import {CommandInteraction, GuildMember, Message, MessageEmbed, Snowflake, TextChannel} from "discord.js";
-import SlashCommandArgument from "../command/SlashCommandArgument";
-import SlashSubCommandArgument from "../command/SlashSubCommandArgument";
-import SlashSubCommandGroupArgument from "../command/SlashSubCommandGroupArgument";
 import {Tag} from "../schema/TagModel";
 import TagProvider from "../provider/TagProvider";
 import Embed from "../../utils/Embed";
 import UserInputUtil from "../../utils/UserInputUtil";
 import PermissionsUtil from "../../utils/PermissionsUtil";
 import ComponentUtil from "../../utils/ComponentUtil";
-import {SlashCommandBuilder} from "@discordjs/builders";
 import {SlashCommandSubcommandBuilder} from "@discordjs/builders/dist/interactions/slashCommands/SlashCommandSubcommands";
 
 export default class TagCommand extends SlashCommand {
 
 
     constructor() {
-        super(new SlashCommandBuilder().setName("tag").setDescription("Tag Command"))
+        super("tag", "Tags Command")
         this.builder.addSubcommand(subCommand =>
             this.buildTagSubCommand(subCommand, "tag", "Einen Tag ausgeben"))
             .addSubcommand(subCommand =>
@@ -26,42 +22,41 @@ export default class TagCommand extends SlashCommand {
             .addSubcommand(subCommand =>
                 this.buildTagSubCommand(subCommand, "edit", "Einen Tag editieren"))
             .addSubcommand(subCommand =>
-                this.buildTagSubCommand(subCommand, "delete", "Einen Tag löschen"))
+                this.buildTagSubCommand(subCommand, "delete", "Einen Tag löschen (MOD ONLY)"))
+            .addSubcommand(subCommand =>
+                this.buildTagSubCommand(subCommand, "raw", "Einen Tag raw anzeigen lassen"))
 
         this.builder.addSubcommandGroup(subcommandGroup =>
             subcommandGroup.setName("alias")
+                .setDescription("Aliases für Tags (MOD ONLY)")
+                .addSubcommand(subCommand =>
+                    this.buildTagAliasSubCommand(subCommand, "create", "Einen Alias erstellen (MOD ONLY)"))
+                .addSubcommand(subCommand =>
+                    this.buildTagAliasSubCommand(subCommand, "remove", "Einen Alias löschen (MOD ONLY)"))
+                ).addSubcommandGroup(subcommandGroup =>
+            subcommandGroup.setName("detectiontags")
                 .setDescription("Aliases für Tags")
-                .addSubcommand(subCommand => {
-                    return subCommand.setName("create")
-                        .setDescription("Einen Alias erstellen")
-                        .addStringOption(stringOption =>
-                            stringOption.setName("tag")
-                                .setDescription("Der Tag")
-                                .setRequired(true))
-                        .addStringOption(stringOption =>
-                            stringOption.setName("alias")
-                                .setDescription("Der Alias")
-                                .setRequired(true))
-                })
-                .addSubcommand(subCommand => {
-                    return subCommand.setName("remove")
-                        .setDescription("Einen Alias löschen")
-                        .addStringOption(stringOption =>
-                            stringOption.setName("tag")
-                                .setDescription("Der Tag")
-                                .setRequired(true))
-                        .addStringOption(stringOption =>
-                            stringOption.setName("alias")
-                                .setDescription("Der Alias")
-                                .setRequired(true))
-                })
+                .addSubcommand(subCommand => subCommand.setName("add")
+                        .setDescription("Detection Tag hinzufügen")
+                        .addStringOption(option => option.setName("tag")
+                            .setDescription("Der Name des Tags"))
+                        .addStringOption(option => option.setName("regex")
+                            .setDescription("Regex Inhalt für den Detection Tag"))
+                ).addSubcommand(subCommand => subCommand.setName("remove")
+                .setDescription("Detection Tag hinzufügen")
+                .addStringOption(option => option.setName("tag")
+                    .setDescription("Der Name des Tags"))
+                .addStringOption(option => option.setName("regex")
+                    .setDescription("Regex Inhalt von dem Detection Tag"))
+            )
         )
     }
 
     async execute(interaction: CommandInteraction): Promise<any> {
         await interaction.deferReply()
 
-        switch (interaction.options.getSubcommand(false) || interaction.options.getSubcommandGroup(false)) {
+        switch (interaction.options.getSubcommandGroup(false)
+        || interaction.options.getSubcommand()) {
             case "tag":
                 return this.tag(interaction)
             case "info":
@@ -72,12 +67,19 @@ export default class TagCommand extends SlashCommand {
                 return this.editTag(interaction)
             case "delete":
                 return this.deleteTag(interaction)
+            case "raw":
+                return this.tagRaw(interaction)
             case "alias":
                 return this.tagAlias(interaction)
         }
     }
 
+    private async sendNoPermission(interaction: CommandInteraction) {
+        interaction.editReply("Du kannst diesen Command nicht ausführen!")
+    }
+
     private async tagAlias(interaction: CommandInteraction) {
+        if (PermissionsUtil.isModerator(interaction.member as GuildMember)) return this.sendNoPermission(interaction)
         const subCommand = interaction.options.getSubcommand()
         const tag = await this.getTag(interaction)
         const alias = interaction.options.getString("alias")
@@ -192,11 +194,11 @@ export default class TagCommand extends SlashCommand {
         await interaction.editReply({
             embeds: [
                 Embed.info("Gebe den Content des Tags an",
-                    "Gebe in der nächsten Minute den Content des Tags in diesem Channel an")
+                    "Gebe in den nächsten 2 Minuten den Content des Tags in diesem Channel an")
             ]
         })
 
-        UserInputUtil.awaitInput(interaction.member as GuildMember, interaction.channel as TextChannel, 60000)
+        UserInputUtil.awaitInput(interaction.member as GuildMember, interaction.channel as TextChannel, 120000)
             .then(value => {
                 let content = value.content
                 value.attachments.forEach(value1 => content += ` ${value1.url}`)
@@ -273,11 +275,11 @@ export default class TagCommand extends SlashCommand {
         await interaction.editReply({
             embeds: [
                 Embed.info("Gebe den Content des Tags an",
-                    "Gebe in der nächsten Minute den Content des Tags in diesem Channel an")
+                    "Gebe in den nächsten 2 Minuten den Content des Tags in diesem Channel an")
             ]
         })
 
-        UserInputUtil.awaitInput(interaction.member as GuildMember, interaction.channel as TextChannel, 60000)
+        UserInputUtil.awaitInput(interaction.member as GuildMember, interaction.channel as TextChannel, 120000)
             .then(value => {
                 if (PermissionsUtil.canExecute([process.env.MOD_ROLE], interaction.member as GuildMember)) {
                     this.editTagInstantly(interaction, tag, value.content)
@@ -293,7 +295,22 @@ export default class TagCommand extends SlashCommand {
             })
     }
 
+    private async tagRaw(interaction: CommandInteraction) {
+        const tag = await this.getTag(interaction)
+        if (!tag) return this.sendTagNotFund(interaction)
+
+        interaction.editReply({
+            content: "Raw-Version des Tags:",
+            files: [{
+                name: `${tag.name}.txt`,
+                attachment: tag.content
+            }]
+
+        })
+    }
+
     private async deleteTag(interaction: CommandInteraction) {
+        if (PermissionsUtil.isModerator(interaction.member as GuildMember)) return this.sendNoPermission(interaction)
         const tag = await this.getTag(interaction)
         if (!tag) return this.sendTagNotFund(interaction)
         tag.delete()
@@ -314,7 +331,7 @@ export default class TagCommand extends SlashCommand {
     }
 
     private getTagName(interaction: CommandInteraction): string {
-        return this.formatName(interaction.options.getString("name"))
+        return this.formatName(interaction.options.getString("tag"))
     }
 
     private sendTagNotFund(interaction: CommandInteraction) {
@@ -337,19 +354,6 @@ export default class TagCommand extends SlashCommand {
         })
     }
 
-    private tagSubCommand(name: string, description: string, args: SlashCommandArgument[], roles: Snowflake[] = []): SlashCommandArgument {
-        return new SlashSubCommandArgument(name, description, [
-            new SlashCommandArgument(
-                "STRING",
-                "name",
-                "Der Tag",
-                true,
-                roles
-            ),
-            ...args
-        ])
-    }
-
     private formatName(name: string): string {
         return name.toLowerCase().replace(" ", "-")
     }
@@ -359,7 +363,19 @@ export default class TagCommand extends SlashCommand {
         return builder.setName(name)
             .setDescription(description)
             .addStringOption(stringOption =>
-                stringOption.setName("name")
+                stringOption.setName("tag")
                     .setDescription("Der Name des Tags"))
     }
+
+    private buildTagAliasSubCommand(builder: SlashCommandSubcommandBuilder, name: string, description: string): SlashCommandSubcommandBuilder {
+        return builder.setName(name)
+            .setDescription(description)
+            .addStringOption(stringOption =>
+                stringOption.setName("tag")
+                    .setDescription("Der Name des Tags"))
+            .addStringOption(stringOption =>
+                stringOption.setName("alias")
+                    .setDescription("Der Name des Aliases"))
+    }
+
 }

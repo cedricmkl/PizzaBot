@@ -9,7 +9,8 @@ export default class TagsCommand extends SlashCommand {
     }
 
     async execute(interaction: CommandInteraction): Promise<any> {
-        await interaction.defer()
+        //TODO: Paginator
+        await interaction.deferReply()
         const tags = await TagProvider.getTags();
         interaction.editReply(`Alle verfügbaren Tags: ${tags.map(value => "`" + value.name + "`").join(", ")}`)
     }

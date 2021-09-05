@@ -13,4 +13,9 @@ export default class PermissionsUtil {
         })
         return hasRole;
     }
+
+    static isModerator(member: GuildMember): boolean {
+        if (member.permissions.has("ADMINISTRATOR")) return true;
+        return member.roles.cache.has(process.env.MOD_ROLE)
+    }
 }

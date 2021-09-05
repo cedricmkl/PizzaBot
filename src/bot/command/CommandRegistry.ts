@@ -18,7 +18,7 @@ export default class CommandRegistry {
         this.slashCommands.push(command)
     }
 
-    registerTextCommand(command: TextCommand) {
+    addTextCommand(command: TextCommand) {
         this.textCommands.push(command)
     }
 
@@ -59,7 +59,6 @@ export default class CommandRegistry {
                 .find(value => value.name.toLowerCase() == name.toLowerCase());
             if (!command) return;
             if (command.prefixNeeded && !containsPrefix) return;
-
 
             args.shift()
             command.execute(message, args).catch(async reason => {

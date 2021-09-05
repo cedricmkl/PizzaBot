@@ -10,7 +10,7 @@ export default class SourceCommand extends SlashCommand {
     }
 
     async execute(interaction: CommandInteraction) {
-        await interaction.defer()
+        await interaction.deferReply()
         const url = `https://github.com/CoolePizza/PizzaBot`
 
         const embed = Embed.info(
