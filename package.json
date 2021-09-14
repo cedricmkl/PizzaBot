@@ -6,15 +6,20 @@
   "scripts": {
     "build": "tsc --project tsconfig.json",
     "dev": "nodemon -r dotenv/config src/main.ts dotenv_config_path=.env.development",
-    "start": "node -r dotenv/config ./build/main.js dotenv_config_path=.env.production",
-    "devStart": "node -r dotenv/config ./build/main.js dotenv_config_path=.env.development"
+    "start": "node -r dotenv/config ./build/main.js",
+    "devStart": "node -r dotenv/config ./build/main.js dotenv_config_path=.env.development",
+    "deployCommandsDev": "nodemon -r dotenv/config src/deploy-commands.ts dotenv_config_path=.env.development",
+    "deployCommandsProd": "nodemon -r dotenv/config src/deploy-commands.ts"
+
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@discordjs/builders": "^0.5.0",
+    "@discordjs/builders": "^0.6.0",
+    "@discordjs/rest": "^0.1.0-canary.0",
     "@octokit/rest": "^18.5.3",
+    "discord-api-types": "^0.23.1",
     "discord.js": "^13.0.0-dev.02f55f0.1626742085",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",

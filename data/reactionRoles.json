@@ -1,6 +1,16 @@
 {
   "roles": [
     {
+      "emoji": "<:youtube:887421020909240330>",
+      "role": "887421647840243722",
+      "name": "Youtube Notifications"
+    },
+    {
+      "emoji": "<:twitch:887421020938584104>",
+      "role": "851097103794176041",
+      "name": "Twitch Notifications"
+    },
+    {
       "emoji": "<:discord:814489551602057226>",
       "role": "814491659911299124",
       "name": "Discord Bots"
@@ -74,6 +84,11 @@
       "emoji": "️<:go:814520971293360128>",
       "role": "814518985705259038",
       "name": "GO"
+    },
+    {
+      "emoji": "️<:swift:825753459113590824>",
+      "role": "825751913559097384",
+      "name": "Swift"
     },
     {
       "emoji": "️<:swift:825753459113590824>",

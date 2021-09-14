@@ -7,7 +7,7 @@ import TagsCommand from "./commands/TagsCommand";
 import TagTextCommand from "./commands/TagTextCommand";
 import TagsTextCommand from "./commands/TagsTextCommand";
 import GoogleCommand from "./commands/GoogleCommand";
-import SourceCommand from "./commands/SourceCommand";
+import InfoCommand from "./commands/InfoCommand";
 import MessageTextCommand from "./commands/MessageTextCommand";
 
 export default class PizzaBot {
@@ -39,10 +39,9 @@ export default class PizzaBot {
         commandRegistry.addCommand(new TagCommand())
         commandRegistry.addCommand(new TagsCommand())
         commandRegistry.addCommand(new GoogleCommand())
-        commandRegistry.addCommand(new SourceCommand())
+        commandRegistry.addCommand(new InfoCommand())
         commandRegistry.addTextCommand(new TagTextCommand())
         commandRegistry.addTextCommand(new TagsTextCommand())
         commandRegistry.addTextCommand(new MessageTextCommand())
-        if (process.env.UPDATE_COMMANDS == "true") await commandRegistry.registerCommands()
     }
 }

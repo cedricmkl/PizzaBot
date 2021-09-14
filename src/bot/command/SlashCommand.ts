@@ -1,6 +1,5 @@
 import {
     ApplicationCommand,
-    ApplicationCommandData,
     ApplicationCommandPermissionData,
     CommandInteraction,
     GuildMember,
@@ -17,12 +16,8 @@ export default abstract class SlashCommand {
         this.builder = new SlashCommandBuilder().setName(name).setDescription(description);
     }
 
-    build(): ApplicationCommandData {
-        // @ts-ignore
-        return {
-            ...this.builder.toJSON(),
-            defaultPermission: this.permittedRoles.length == 0
-        }
+    build(): SlashCommandBuilder {
+        return this.builder.setDefaultPermission(this.permittedRoles.length == 0)
     }
 
 

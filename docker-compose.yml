@@ -1,0 +1,9 @@
+version: "3.1"
+
+services:
+  bot:
+    container_name: pizzabot
+    image: docker.pkg.github.com/coolepizza/pizzabot/discord-bot:latest
+    env_file:
+      - .env
+    

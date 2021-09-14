@@ -33,7 +33,7 @@ export default class TagCommand extends SlashCommand {
                     this.buildTagAliasSubCommand(subCommand, "create", "Einen Alias erstellen (MOD ONLY)"))
                 .addSubcommand(subCommand =>
                     this.buildTagAliasSubCommand(subCommand, "remove", "Einen Alias löschen (MOD ONLY)"))
-                ).addSubcommandGroup(subcommandGroup =>
+                )/*.addSubcommandGroup(subcommandGroup =>
             subcommandGroup.setName("detectiontags")
                 .setDescription("Aliases für Tags")
                 .addSubcommand(subCommand => subCommand.setName("add")
@@ -49,7 +49,7 @@ export default class TagCommand extends SlashCommand {
                 .addStringOption(option => option.setName("regex")
                     .setDescription("Regex Inhalt von dem Detection Tag"))
             )
-        )
+        )*/
     }
 
     async execute(interaction: CommandInteraction): Promise<any> {
@@ -79,10 +79,10 @@ export default class TagCommand extends SlashCommand {
     }
 
     private async tagAlias(interaction: CommandInteraction) {
-        if (PermissionsUtil.isModerator(interaction.member as GuildMember)) return this.sendNoPermission(interaction)
+        if (!PermissionsUtil.isModerator(interaction.member as GuildMember)) return this.sendNoPermission(interaction)
         const subCommand = interaction.options.getSubcommand()
         const tag = await this.getTag(interaction)
-        const alias = interaction.options.getString("alias")
+        const alias = interaction.options.getString("alias").toLowerCase()
         if (!tag) return interaction.editReply({
             embeds: [
                 Embed.error(
@@ -202,7 +202,7 @@ export default class TagCommand extends SlashCommand {
             .then(value => {
                 let content = value.content
                 value.attachments.forEach(value1 => content += ` ${value1.url}`)
-                if (PermissionsUtil.canExecute([process.env.MOD_ROLE], interaction.member as GuildMember)) {
+                if (PermissionsUtil.isModerator(interaction.member as GuildMember)) {
                     this.createTagInstantly(interaction, content)
                 } else this.createTagRequest(interaction, content)
             })
@@ -281,7 +281,7 @@ export default class TagCommand extends SlashCommand {
 
         UserInputUtil.awaitInput(interaction.member as GuildMember, interaction.channel as TextChannel, 120000)
             .then(value => {
-                if (PermissionsUtil.canExecute([process.env.MOD_ROLE], interaction.member as GuildMember)) {
+                if (PermissionsUtil.isModerator(interaction.member as GuildMember)) {
                     this.editTagInstantly(interaction, tag, value.content)
                 } else this.createTagRequest(interaction, value.content)
             })
@@ -310,7 +310,7 @@ export default class TagCommand extends SlashCommand {
     }
 
     private async deleteTag(interaction: CommandInteraction) {
-        if (PermissionsUtil.isModerator(interaction.member as GuildMember)) return this.sendNoPermission(interaction)
+        if (!PermissionsUtil.isModerator(interaction.member as GuildMember)) return this.sendNoPermission(interaction)
         const tag = await this.getTag(interaction)
         if (!tag) return this.sendTagNotFund(interaction)
         tag.delete()
@@ -364,6 +364,7 @@ export default class TagCommand extends SlashCommand {
             .setDescription(description)
             .addStringOption(stringOption =>
                 stringOption.setName("tag")
+                    .setRequired(true)
                     .setDescription("Der Name des Tags"))
     }
 
@@ -372,9 +373,11 @@ export default class TagCommand extends SlashCommand {
             .setDescription(description)
             .addStringOption(stringOption =>
                 stringOption.setName("tag")
+                    .setRequired(true)
                     .setDescription("Der Name des Tags"))
             .addStringOption(stringOption =>
                 stringOption.setName("alias")
+                    .setRequired(true)
                     .setDescription("Der Name des Aliases"))
     }
 
