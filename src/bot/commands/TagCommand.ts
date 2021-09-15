@@ -67,8 +67,8 @@ export default class TagCommand extends SlashCommand {
                 return this.editTag(interaction)
             case "delete":
                 return this.deleteTag(interaction)
-            case "raw":
-                return this.tagRaw(interaction)
+          //  case "raw":
+            //    return this.tagRaw(interaction)
             case "alias":
                 return this.tagAlias(interaction)
         }
