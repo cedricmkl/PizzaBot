@@ -14,12 +14,12 @@ export default class PizzaBot {
     private readonly client: Client
 
     constructor() {
-        DatabaseHelper.connect();
         this.client = new Client({intents: ["GUILD_MESSAGES", "GUILDS", "GUILD_MEMBERS"]});
         this.initListeners()
     }
 
-    connect() {
+    async connect() {
+        await DatabaseHelper.connect();
         this.client.login(process.env.DISCORD_TOKEN);
     }
 
