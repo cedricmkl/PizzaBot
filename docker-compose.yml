@@ -4,7 +4,21 @@ services:
   bot:
     container_name: pizzabot
     image: ghcr.io/coolepizza/pizzabot:master
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    networks:
+      - pizzabot
     env_file:
       - .env
+  mongo:
+    container_name: mongodb
+    image: mongo
+    volumes:
+      - db_data:/data/db
+    networks:
+      - pizzabot
+
+networks:
+  pizzabot:
+    external: false
+
+volumes:
+  db_data:
