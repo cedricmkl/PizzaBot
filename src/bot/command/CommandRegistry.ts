@@ -24,28 +24,34 @@ export default class CommandRegistry {
 
     private initListener() {
         this.client.on("interactionCreate", (interaction) => {
-            if (!interaction.isCommand()) return
-            if (interaction.guild.id != process.env.GUILD) return;
-            const command: SlashCommand = this.slashCommands.find(value => value.name === interaction.commandName)
-            if (!command) return;
-            if (!command.canExecute(interaction)) return interaction.reply({
-                content: "Du hast keine Rechte diesen Command auszuführen",
-                ephemeral: true
-            });
-            command.execute(interaction)
-                .catch(async reason => {
-                    const paste = await PasteUtil.paste(reason)
-                    const embed = new MessageEmbed({
-                        title: "Fehler beim ausführen des Commands",
-                        description: `Fehler wurde hier hochgeladen: ${paste}`,
-                        color: "RED"
+
+            if (interaction.isCommand()) {
+                if (interaction.guild.id != process.env.GUILD) return;
+                const command: SlashCommand = this.slashCommands.find(value => value.name === interaction.commandName)
+                if (!command) return;
+                if (!command.canExecute(interaction)) return interaction.reply({
+                    content: "Du hast keine Rechte diesen Command auszuführen",
+                    ephemeral: true
+                });
+                command.execute(interaction)
+                    .catch(async reason => {
+                        const paste = await PasteUtil.paste(reason)
+                        const embed = new MessageEmbed({
+                            title: "Fehler beim ausführen des Commands",
+                            description: `Fehler wurde hier hochgeladen: ${paste}`,
+                            color: "RED"
+                        })
+                        if (interaction.replied || interaction.deferred) {
+                            await interaction.editReply({embeds: [embed]})
+                        } else {
+                            await interaction.reply({embeds: [embed]})
+                        }
                     })
-                    if (interaction.replied || interaction.deferred) {
-                        await interaction.editReply({embeds: [embed]})
-                    } else {
-                        await interaction.reply({embeds: [embed]})
-                    }
-                })
+            }else if (interaction.isAutocomplete()) {
+                const command: SlashCommand = this.slashCommands.find(value => value.name === interaction.commandName)
+                if (!command) return;
+                command.autoComplete(interaction)
+            }
         })
 
         this.client.on("messageCreate", (message) => {

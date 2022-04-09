@@ -1,6 +1,6 @@
 import {
     ApplicationCommand,
-    ApplicationCommandPermissionData,
+    ApplicationCommandPermissionData, AutocompleteInteraction,
     CommandInteraction,
     GuildMember,
     Snowflake
@@ -39,6 +39,7 @@ export default abstract class SlashCommand {
     }
 
     abstract execute(interaction: CommandInteraction)
+    async autoComplete(interaction: AutocompleteInteraction) {}
 
     canExecute(interaction: CommandInteraction): boolean {
         return PermissionsUtil.canExecute(this.permittedRoles, interaction.member as GuildMember)

@@ -1,12 +1,20 @@
 import SlashCommand from "../command/SlashCommand";
-import {CommandInteraction, GuildMember, Message, MessageEmbed, Snowflake, TextChannel} from "discord.js";
+import {
+    ApplicationCommandOptionChoice,
+    AutocompleteInteraction,
+    CommandInteraction,
+    GuildMember,
+    Message,
+    MessageEmbed,
+    TextChannel
+} from "discord.js";
 import {Tag} from "../schema/TagModel";
 import TagProvider from "../provider/TagProvider";
 import Embed from "../../utils/Embed";
 import UserInputUtil from "../../utils/UserInputUtil";
 import PermissionsUtil from "../../utils/PermissionsUtil";
 import ComponentUtil from "../../utils/ComponentUtil";
-import {SlashCommandSubcommandBuilder} from "@discordjs/builders/dist/interactions/slashCommands/SlashCommandSubcommands";
+import {SlashCommandSubcommandBuilder} from "@discordjs/builders";
 
 export default class TagCommand extends SlashCommand {
 
@@ -14,7 +22,7 @@ export default class TagCommand extends SlashCommand {
     constructor() {
         super("tag", "Tags Command")
         this.builder.addSubcommand(subCommand =>
-            this.buildTagSubCommand(subCommand, "tag", "Einen Tag ausgeben"))
+            this.buildAutoCompleteTagSubCommand(subCommand, "tag", "Einen Tag ausgeben"))
             .addSubcommand(subCommand =>
                 this.buildTagSubCommand(subCommand, "info", "Informationen über einen Tag ausgeben"))
             .addSubcommand(subCommand =>
@@ -23,8 +31,6 @@ export default class TagCommand extends SlashCommand {
                 this.buildTagSubCommand(subCommand, "edit", "Einen Tag editieren"))
             .addSubcommand(subCommand =>
                 this.buildTagSubCommand(subCommand, "delete", "Einen Tag löschen (MOD ONLY)"))
-            .addSubcommand(subCommand =>
-                this.buildTagSubCommand(subCommand, "raw", "Einen Tag raw anzeigen lassen"))
 
         this.builder.addSubcommandGroup(subcommandGroup =>
             subcommandGroup.setName("alias")
@@ -33,23 +39,27 @@ export default class TagCommand extends SlashCommand {
                     this.buildTagAliasSubCommand(subCommand, "create", "Einen Alias erstellen (MOD ONLY)"))
                 .addSubcommand(subCommand =>
                     this.buildTagAliasSubCommand(subCommand, "remove", "Einen Alias löschen (MOD ONLY)"))
-                )/*.addSubcommandGroup(subcommandGroup =>
-            subcommandGroup.setName("detectiontags")
-                .setDescription("Aliases für Tags")
-                .addSubcommand(subCommand => subCommand.setName("add")
-                        .setDescription("Detection Tag hinzufügen")
-                        .addStringOption(option => option.setName("tag")
-                            .setDescription("Der Name des Tags"))
-                        .addStringOption(option => option.setName("regex")
-                            .setDescription("Regex Inhalt für den Detection Tag"))
-                ).addSubcommand(subCommand => subCommand.setName("remove")
-                .setDescription("Detection Tag hinzufügen")
-                .addStringOption(option => option.setName("tag")
-                    .setDescription("Der Name des Tags"))
-                .addStringOption(option => option.setName("regex")
-                    .setDescription("Regex Inhalt von dem Detection Tag"))
-            )
-        )*/
+        )
+    }
+
+    async autoComplete(interaction: AutocompleteInteraction) {
+        if (interaction.commandName !== "tag") return
+        const focused = interaction.options.getFocused(true)
+
+        if (focused.name === "tag") {
+            const input = this.formatName(focused.value as string)
+            const tags = await TagProvider.getCachedTags()
+            const filteredTags: ApplicationCommandOptionChoice[] = tags.filter(tag => tag.name.includes(input) ||
+                tag.aliases.some(alias => alias.includes(input)))
+                .slice(0, 10)
+                .map(tag => {
+                    return {
+                        name: tag.name,
+                        value: tag.name,
+                    }
+                })
+            await interaction.respond(filteredTags)
+        }
     }
 
     async execute(interaction: CommandInteraction): Promise<any> {
@@ -67,15 +77,13 @@ export default class TagCommand extends SlashCommand {
                 return this.editTag(interaction)
             case "delete":
                 return this.deleteTag(interaction)
-          //  case "raw":
-            //    return this.tagRaw(interaction)
             case "alias":
                 return this.tagAlias(interaction)
         }
     }
 
     private async sendNoPermission(interaction: CommandInteraction) {
-        interaction.editReply("Du kannst diesen Command nicht ausführen!")
+        await interaction.editReply("Du kannst diesen Command nicht ausführen!")
     }
 
     private async tagAlias(interaction: CommandInteraction) {
@@ -248,6 +256,7 @@ export default class TagCommand extends SlashCommand {
                     ]
                 })
             })
+        TagProvider.invalidateCache()
     }
 
     private async createTagRequest(interaction: CommandInteraction, content: string) {
@@ -323,6 +332,7 @@ export default class TagCommand extends SlashCommand {
                 )
             ]
         })
+        TagProvider.invalidateCache()
     }
 
 
@@ -365,6 +375,16 @@ export default class TagCommand extends SlashCommand {
             .addStringOption(stringOption =>
                 stringOption.setName("tag")
                     .setRequired(true)
+                    .setDescription("Der Name des Tags"))
+    }
+
+    private buildAutoCompleteTagSubCommand(builder: SlashCommandSubcommandBuilder, name: string, description: string): SlashCommandSubcommandBuilder {
+        return builder.setName(name)
+            .setDescription(description)
+            .addStringOption(stringOption =>
+                stringOption.setName("tag")
+                    .setRequired(true)
+                    .setAutocomplete(true)
                     .setDescription("Der Name des Tags"))
     }
 

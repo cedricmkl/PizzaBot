@@ -5,6 +5,8 @@ import TagRequestSchema, {TagRequest} from "../schema/TagRequest";
 
 export default class TagProvider {
 
+    private static cache: Array<Tag> = null
+
     static async getTag(name: string): Promise<Tag> {
         return TagModel.findOne({$or: [{name: name.toLowerCase()}, {aliases: name.toLowerCase()}]});
     }
@@ -16,6 +18,7 @@ export default class TagProvider {
     static async createTag(name: string, content: string, createdAt: Date = new Date()): Promise<Tag> {
         content = Util.removeMentions(content)
         name = Util.removeMentions(name)
+        this.invalidateCache()
 
         return await TagModel.create({
             name: name,
@@ -48,6 +51,7 @@ export default class TagProvider {
             content: tagRequest.tag.content
         }, {upsert: true, setDefaultsOnInsert: true})
         await tagRequest.delete()
+        this.invalidateCache()
     }
 
     static async getTagRequest(messageID: string): Promise<TagRequest> {
@@ -55,6 +59,17 @@ export default class TagProvider {
     }
 
     static async getTags(): Promise<Array<Tag>> {
-        return TagModel.find();
+        return this.getCachedTags()
+    }
+
+    static async getCachedTags(): Promise<Array<Tag>> {
+        if (this.cache == null) {
+            this.cache = await TagModel.find()
+        }
+        return this.cache
+    }
+
+    static invalidateCache() {
+        this.cache = null
     }
 }
