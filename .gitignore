@@ -5,3 +5,4 @@
 !.env.example
 package-lock.json
 env.development
+docker-compose.dev.yml
