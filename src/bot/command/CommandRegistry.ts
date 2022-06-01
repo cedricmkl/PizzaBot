@@ -11,7 +11,7 @@ export default class CommandRegistry {
 
     constructor(client: Client) {
         this.client = client;
-        this.initListener();
+        this.registerListeners();
     }
 
     addCommand(command: SlashCommand) {
@@ -22,9 +22,8 @@ export default class CommandRegistry {
         this.textCommands.push(command)
     }
 
-    private initListener() {
+    private registerListeners() {
         this.client.on("interactionCreate", (interaction) => {
-
             if (interaction.isCommand()) {
                 if (interaction.guild.id != process.env.GUILD) return;
                 const command: SlashCommand = this.slashCommands.find(value => value.name === interaction.commandName)
@@ -78,6 +77,8 @@ export default class CommandRegistry {
                 })
             })
         })
+
+        this.slashCommands.forEach(command => command.registerEvents(this.client))
     }
 
 }

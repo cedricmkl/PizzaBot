@@ -1,4 +1,4 @@
-import {Client} from "discord.js"
+import {Client, Intents} from "discord.js"
 import DatabaseHelper from "../utils/DatabaseHelper";
 import CommandRegistry from "./command/CommandRegistry";
 import ButtonRegistry from "./component/ButtonRegistry";
@@ -15,13 +15,13 @@ export default class PizzaBot {
     private readonly client: Client
 
     constructor() {
-        this.client = new Client({intents: ["GUILD_MESSAGES", "GUILDS", "GUILD_MEMBERS"]});
+        this.client = new Client({intents: [Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS]});
         this.initListeners()
     }
 
     async connect() {
         await DatabaseHelper.connect();
-        this.client.login(process.env.DISCORD_TOKEN);
+        await this.client.login(process.env.DISCORD_TOKEN);
     }
 
     initListeners() {

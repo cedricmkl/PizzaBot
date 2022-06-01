@@ -1,5 +1,5 @@
 import SlashCommand from "../command/SlashCommand";
-import {CommandInteraction, GuildMemberRoleManager, Snowflake} from "discord.js";
+import {Client, CommandInteraction, GuildMemberRoleManager, Snowflake} from "discord.js";
 import Embed from "../../utils/Embed";
 import CustomColorModel from "../schema/CustomColorModel";
 
@@ -14,7 +14,17 @@ export default class ColorCommand extends SlashCommand {
                     .addStringOption(option => option.setName("color").setDescription("Die Farbe in HEX").setRequired(true))
             )
             .addSubcommand(command => command.setName("reset").setDescription("Setze deine Rollenfarbe zurück (nur für Booster)"))
+    }
 
+    registerEvents(client: Client) {
+        client.on("guildMemberUpdate", async (oldMember, newMember) => {
+            if (oldMember.premiumSince && !newMember.premiumSince) {
+                const customColor = await CustomColorModel.findOne({userId: newMember.user.id as string})
+                if (!customColor) return
+                await customColor.delete()
+                await newMember.guild.roles.delete(customColor.roleId as Snowflake)
+            }
+        })
     }
 
     async execute(interaction: CommandInteraction) {

@@ -1,6 +1,6 @@
 import {
     ApplicationCommand,
-    ApplicationCommandPermissionData, AutocompleteInteraction,
+    ApplicationCommandPermissionData, AutocompleteInteraction, Client,
     CommandInteraction,
     GuildMember,
     Snowflake
@@ -18,6 +18,10 @@ export default abstract class SlashCommand {
 
     build(): SlashCommandBuilder {
         return this.builder.setDefaultPermission(this.permittedRoles.length == 0)
+    }
+
+    registerEvents(client: Client) {
+
     }
 
 
