@@ -1,3 +1,5 @@
+import ColorCommand from "./bot/commands/ColorCommand";
+
 require("dotenv").config()
 import {SlashCommandBuilder} from "@discordjs/builders";
 import {REST} from "@discordjs/rest";
@@ -12,7 +14,7 @@ commands.push(new GoogleCommand().build())
 commands.push(new InfoCommand().build())
 commands.push(new TagCommand().build())
 commands.push(new TagsCommand().build())
-
+commands.push(new ColorCommand().build())
 
 const restClient = new REST({ version: "9" }).setToken(process.env.DISCORD_TOKEN)
 

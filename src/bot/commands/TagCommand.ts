@@ -1,6 +1,6 @@
 import SlashCommand from "../command/SlashCommand";
 import {
-    ApplicationCommandOptionChoice,
+    ApplicationCommandOptionChoiceData,
     AutocompleteInteraction,
     CommandInteraction,
     GuildMember,
@@ -49,7 +49,7 @@ export default class TagCommand extends SlashCommand {
         if (focused.name === "tag") {
             const input = this.formatName(focused.value as string)
             const tags = await TagProvider.getCachedTags()
-            const filteredTags: ApplicationCommandOptionChoice[] = tags.filter(tag => tag.name.includes(input) ||
+            const filteredTags: ApplicationCommandOptionChoiceData[] = tags.filter(tag => tag.name.includes(input) ||
                 tag.aliases.some(alias => alias.includes(input)))
                 .slice(0, 10)
                 .map(tag => {

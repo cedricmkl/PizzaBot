@@ -9,6 +9,7 @@ import TagsTextCommand from "./commands/TagsTextCommand";
 import GoogleCommand from "./commands/GoogleCommand";
 import InfoCommand from "./commands/InfoCommand";
 import MessageTextCommand from "./commands/MessageTextCommand";
+import ColorCommand from "./commands/ColorCommand";
 
 export default class PizzaBot {
     private readonly client: Client
@@ -40,6 +41,7 @@ export default class PizzaBot {
         commandRegistry.addCommand(new TagsCommand())
         commandRegistry.addCommand(new GoogleCommand())
         commandRegistry.addCommand(new InfoCommand())
+        commandRegistry.addCommand(new ColorCommand())
         commandRegistry.addTextCommand(new TagTextCommand())
         commandRegistry.addTextCommand(new TagsTextCommand())
         commandRegistry.addTextCommand(new MessageTextCommand())
