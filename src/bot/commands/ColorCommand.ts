@@ -84,7 +84,7 @@ export default class ColorCommand extends SlashCommand {
                         upsert: true
                     })
                 } else {
-                    await interaction.guild.roles.edit(
+                    role = await interaction.guild.roles.edit(
                         role,
                         {
                             color: `#${color}`,
@@ -92,7 +92,7 @@ export default class ColorCommand extends SlashCommand {
                         }
                     )
                 }
-                return await interaction.editReply("Deine Farbe wurde erfolgreich gesetzt.")
+                return await interaction.editReply(`Deine Farbe wurde erfolgreich zu ${role.toString()} gesetzt.`)
             }
         }
 
