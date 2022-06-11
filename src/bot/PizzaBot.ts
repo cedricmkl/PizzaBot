@@ -21,21 +21,24 @@ export default class PizzaBot {
     }
 
     async connect() {
-        await DatabaseHelper.connect();
+        //diawait DatabaseHelper.connect();
         await this.client.login(process.env.DISCORD_TOKEN);
-    }
+    }   d
 
     initListeners() {
-        const inviteRegex = new RegExp(/(https?:\/\/)?(www\.)?(((discordapp|discord)\.com\/invite)|(discord\.gg))\/(\w+)/gm)
-
         this.client.on("ready", () => {
             console.log(`Successfully logged in as Discord Bot ${this.client.user.tag}`)
             this.init();
         })
-        this.client.on("messageCreate", async (message) => {
+
+        this.client.on("messageCreate",  (message) => {
+            const inviteRegex = new RegExp('(https?:\\/\\/)?(www\\.)?(((discordapp|discord)\\.com\\/invite)|(discord\\.gg))\\/(\\w+)', 'gm')
             if (inviteRegex.test(message.content) && !PermissionsUtil.isModerator(message.member)) {
-                await message.delete()
+                message.delete()
             }
+        })
+        this.client.on("rateLimit", (thing) => {
+            console.log(thing)
         })
     }
 
