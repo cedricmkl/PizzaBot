@@ -10,6 +10,7 @@ import GoogleCommand from "./commands/GoogleCommand";
 import InfoCommand from "./commands/InfoCommand";
 import MessageTextCommand from "./commands/MessageTextCommand";
 import ColorCommand from "./commands/ColorCommand";
+import PermissionsUtil from "../utils/PermissionsUtil";
 
 export default class PizzaBot {
     private readonly client: Client
@@ -25,9 +26,16 @@ export default class PizzaBot {
     }
 
     initListeners() {
+        const inviteRegex = new RegExp(/(https?:\/\/)?(www\.)?(((discordapp|discord)\.com\/invite)|(discord\.gg))\/(\w+)/gm)
+
         this.client.on("ready", () => {
             console.log(`Successfully logged in as Discord Bot ${this.client.user.tag}`)
             this.init();
+        })
+        this.client.on("messageCreate", async (message) => {
+            if (inviteRegex.test(message.content) && !PermissionsUtil.isModerator(message.member)) {
+                await message.delete()
+            }
         })
     }
 
