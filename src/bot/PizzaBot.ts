@@ -1,5 +1,4 @@
 import {Client, Intents} from "discord.js"
-import DatabaseHelper from "../utils/DatabaseHelper";
 import CommandRegistry from "./command/CommandRegistry";
 import ButtonRegistry from "./component/ButtonRegistry";
 import TagCommand from "./commands/TagCommand";
@@ -11,6 +10,7 @@ import InfoCommand from "./commands/InfoCommand";
 import MessageTextCommand from "./commands/MessageTextCommand";
 import ColorCommand from "./commands/ColorCommand";
 import PermissionsUtil from "../utils/PermissionsUtil";
+import DatabaseHelper from "../utils/DatabaseHelper";
 
 export default class PizzaBot {
     private readonly client: Client
@@ -21,9 +21,9 @@ export default class PizzaBot {
     }
 
     async connect() {
-        //diawait DatabaseHelper.connect();
+        await DatabaseHelper.connect();
         await this.client.login(process.env.DISCORD_TOKEN);
-    }   d
+    }
 
     initListeners() {
         this.client.on("ready", () => {
