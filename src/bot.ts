@@ -1,18 +1,18 @@
-import { Client, GatewayIntentBits, Partials } from "discord.js";
+import { Client, GatewayIntentBits } from "discord.js";
 import { exit } from "process";
-import { registerCommandListeners } from "./commands/commands";
+import { getTag } from "./database/database";
+import { registerInteractions } from "./interactions/interactions";
+import { errorEmbed } from "./util/embeds";
 
 export async function startBot() {
     const client = new Client({
         intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
-        allowedMentions: { parse: ["users", "roles"], repliedUser: true }
+        allowedMentions: { parse: ["users", "roles"], repliedUser: false }
     })
-
-
 
     client.login(process.env.DISCORD_TOKEN)
         .then(async () => {
-            console.debug("Connected to Discord")
+            console.log("Connected to Discord")
             await registerListeners(client)
         })
         .catch((err) => {
@@ -23,5 +23,20 @@ export async function startBot() {
 
 
 function registerListeners(client: Client) {
-    registerCommandListeners(client)
+    registerInteractions(client)
+
+
+    //will be removed in some time
+    client.on("messageCreate", async (message) => {
+        if (message.author.bot) return
+        if (!message.content.startsWith("tag") || message.content.split(" ").length < 2) return
+        const input = message.content.split(" ")[1]
+        const tag = await getTag(input)
+
+        if (!tag) {
+            await message.reply({ embeds: [errorEmbed("Der Tag wurde nicht gefunden.")] })
+            return
+        }
+        await message.reply(tag.content)
+    })
 }

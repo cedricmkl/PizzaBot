@@ -22,8 +22,8 @@ export function errorEmbed(
 }
 
 export function successEmbed(
-    description: string = "",
-    title: string = "Erfolgreich"
+    title: string = "Erfolgreich",
+    description: string
 ): EmbedBuilder {
     return createEmbed(title, `✅ ${description}`, [], Colors.Green)
 }

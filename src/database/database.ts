@@ -5,10 +5,10 @@ import tagRequestModel, { TagRequest } from "./model/tag-request.model"
 import tagModel, { Tag } from "./model/tag.model"
 
 export const connectToMongoDB = async () => {
-    console.debug("Trying to connect to MongoDB")
+    console.log("Trying to connect to MongoDB")
     try {
         await connect(process.env.MONGO_URI)
-        console.debug("Connected to mongodb")
+        console.log("Connected to mongodb")
     } catch (err) {
         console.error("Failed To Connect to MongoDB", err)
         exit(-1)
@@ -18,7 +18,7 @@ export const connectToMongoDB = async () => {
 let tagCache: Array<Tag> = []
 
 export async function getTag(name: string): Promise<Tag> {
-    return tagModel.findOne({ name: name })
+    return tagModel.findOne({ $or: [{ name: name.toLowerCase() }, { aliases: name.toLowerCase() }] })
 }
 
 export async function exitsTag(name: string): Promise<boolean> {
@@ -55,7 +55,7 @@ export async function createOrEditTagfromTagRequest(tagRequest: TagRequest) {
         content: tagRequest.tag.content
     }, { upsert: true, setDefaultsOnInsert: true })
     await tagRequest.delete()
-    this.invalidateCache()
+    clearTagCache()
 }
 
 export async function getTagRequest(messageID: string): Promise<TagRequest> {
