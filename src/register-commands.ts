@@ -2,6 +2,19 @@ import { REST, Routes, SlashCommandBuilder, SlashCommandStringOption } from "dis
 
 
 const commands = [
+    //google
+    new SlashCommandBuilder()
+        .setName("google")
+        .setDescription("Suche mit Google.")
+        .addStringOption((option) =>
+            option.setName("query")
+                .setDescription("Der Search Term.")
+                .setRequired(true)),
+    //info
+    new SlashCommandBuilder()
+        .setName("info")
+        .setDescription("Zeige Informationen über den Bot an."),
+    //tag
     new SlashCommandBuilder()
         .setName("tag")
         .setDescription("Zeige einen Tag an.")

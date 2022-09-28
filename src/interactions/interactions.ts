@@ -1,6 +1,8 @@
 import { AutocompleteInteraction, ButtonInteraction, ChatInputCommandInteraction, Client, CommandInteraction } from "discord.js";
 import { tagAutocomplete } from "./autocomplete/tag.autocomplete";
 import { tagsRequestButtonSubmit } from "./button/tag-request.button";
+import { googleCommand } from "./command/google.command";
+import { infoCommand } from "./command/info.command";
 import { tagCommand } from "./command/tag.command";
 import { tagsCommand } from "./command/tags.command";
 
@@ -26,10 +28,16 @@ async function handleCommand(interaction: ChatInputCommandInteraction) {
             case "tags":
                 await tagsCommand(interaction)
                 break
+            case "google":
+                await googleCommand(interaction)
+                break
+            case "info":
+                await infoCommand(interaction)
+                break
         }
     } catch (err) {
         console.error(err)
-        if (interaction.replied) {
+        if (interaction.replied || interaction.deferred) {
             await interaction.editReply("Es ist ein Fehler beim ausführen dieses Befehls aufgetreten.")
         } else {
             await interaction.reply("Es ist ein Fehler beim ausführen dieses Befehls aufgetreten.")

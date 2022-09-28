@@ -36,7 +36,7 @@ async function tagsList(interaction: ChatInputCommandInteraction) {
 
 async function tagsInfo(interaction: ChatInputCommandInteraction, name: string) {
     const tag = await getTag(name)
-    if (!tag) return await interaction.reply({ embeds: [errorEmbed("Der Tag wurde nicht gefunden.")] })
+    if (!tag) return await interaction.reply({ embeds: [errorEmbed("Fehler", "Der Tag wurde nicht gefunden.")] })
     await interaction.reply({
         embeds: [
             createEmbed(`Tag ${tag.name}`, null, [{
@@ -98,15 +98,15 @@ async function tagsCreate(interaction: ChatInputCommandInteraction, name: string
     }).catch(async (err) => {
         console.error(err)
         await interaction.editReply({
-            embeds: [errorEmbed("Es wurde keinen Inhalt angegeben.",
-                "Tag konnte nicht erstellt werden")]
+            embeds: [errorEmbed("Tag konnte nicht erstellt werden",
+                "Es wurde kein Inhalt angegeben.")]
         })
     })
 }
 
 async function tagsEdit(interaction: ChatInputCommandInteraction, name: string) {
     const tag = await getTag(name)
-    if (!tag) return await interaction.reply({ embeds: [errorEmbed("Einen Tag mit diesem Namen gibt es nicht.")] })
+    if (!tag) return await interaction.reply({ embeds: [errorEmbed("Fehler", "Einen Tag mit diesem Namen gibt es nicht.")] })
 
     await interaction.reply({
         embeds: [createEmbed("Gebe den Inhalt an",
@@ -151,8 +151,8 @@ async function tagsEdit(interaction: ChatInputCommandInteraction, name: string) 
     }).catch(async (err) => {
         console.error(err)
         await interaction.editReply({
-            embeds: [errorEmbed("Es wurde keinen Inhalt angegeben.",
-                "Tag konnte nicht bearbeitet werden")]
+            embeds: [errorEmbed("Tag konnte nicht bearbeitet werden",
+                "Es wurde keinen Inhalt angegeben.")]
         })
     })
 }

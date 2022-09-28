@@ -34,7 +34,7 @@ function registerListeners(client: Client) {
         const tag = await getTag(input)
 
         if (!tag) {
-            await message.reply({ embeds: [errorEmbed("Der Tag wurde nicht gefunden.")] })
+            await message.reply({ embeds: [errorEmbed("Fehler", "Der Tag wurde nicht gefunden.")] })
             return
         }
         await message.reply(tag.content)
