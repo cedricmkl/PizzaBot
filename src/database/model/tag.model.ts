@@ -1,12 +1,10 @@
-import * as mongoose from "mongoose";
-import {Document, Schema} from "mongoose";
+import { model, Document, Schema } from "mongoose";
 
 export class Tag extends Document {
     name: string
     createdAt: Date
     content: string
     aliases: string[]
-
 }
 
 const TagSchema: Schema = new Schema({
@@ -31,5 +29,4 @@ const TagSchema: Schema = new Schema({
     }
 });
 
-// Export the model and return your Tag interface
-export default mongoose.model<Tag>('tag', TagSchema);
+export default model<Tag>('tag', TagSchema);

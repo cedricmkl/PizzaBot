@@ -1,5 +1,4 @@
-import * as mongoose from "mongoose";
-import {Document, Schema} from "mongoose";
+import { model, Document, Schema } from "mongoose";
 
 export class CustomColor extends Document {
     userId: string
@@ -19,5 +18,4 @@ const CustomColorSchema: Schema = new Schema({
     }
 });
 
-
-export default mongoose.model<CustomColor>('CustomColor', CustomColorSchema);
+export default model<CustomColor>('CustomColor', CustomColorSchema);
