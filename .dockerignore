@@ -1,9 +1,4 @@
 node_modules
-npm-debug.log
-# ignore .git and .cache folders
+build
 .git
-.cache
-# ignore all markdown files (md) beside all README*.md other than README-secret.md
-*.md
-!README*.md
-.github/
+.github

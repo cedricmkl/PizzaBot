@@ -5,35 +5,29 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc --project tsconfig.json",
-    "dev": "nodemon -r dotenv/config src/main.ts dotenv_config_path=.env.development",
-    "start": "node -r dotenv/config ./build/main.js",
-    "devStart": "node -r dotenv/config ./build/main.js dotenv_config_path=.env.development",
-    "deployCommandsDev": "nodemon -r dotenv/config src/deploy-commands.ts dotenv_config_path=.env.development",
-    "deployCommandsProd": "nodemon -r dotenv/config src/deploy-commands.ts"
+    "dev": "nodemon -r dotenv/config src/index.ts dotenv_config_path=.env.development",
+    "commands": "ts-node src/register-commands.ts",
+    "commands-dev": "nodemon -r dotenv/config src/register-commands.ts dotenv_config_path=.env.development",
+    "start": "node ./build/index.js",
+    "lint": "eslint"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "private": true,
+  "license": "MIT",
   "dependencies": {
-    "@discordjs/builders": "^0.13.0",
-    "@discordjs/rest": "^0.3.0",
-    "@octokit/rest": "^18.5.3",
-    "discord-api-types": "^0.31.0",
-    "discord.js": "^13.6.0",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "fs": "0.0.1-security",
+    "discord.js": "^14.5.0",
+    "dotenv": "^16.0.2",
     "google-search": "^0.0.5",
-    "hastebin": "^0.2.1",
-    "hastebin-gen": "^2.0.5",
-    "mongoose": "^5.12.2",
-    "node-fetch": "^2.6.1"
+    "log4js": "^6.6.1",
+    "mongoose": "^6.6.2",
+    "node-fetch": "2"
   },
   "devDependencies": {
-    "@types/express": "^4.17.11",
-    "@types/node": "^14.14.37",
-    "nodemon": "^2.0.7",
-    "ts-node": "^10.8.0",
-    "typescript": "^4.7.2"
+    "@types/node": "^18.7.23",
+    "eslint": "^8.24.0",
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.3"
   }
 }
