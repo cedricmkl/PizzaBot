@@ -1,12 +1,13 @@
 import { Client, GatewayIntentBits } from "discord.js";
 import { exit } from "process";
 import { getTag } from "./database/database";
+import { registerNitroColorListener } from "./interactions/command/color.command";
 import { registerInteractions } from "./interactions/interactions";
 import { errorEmbed } from "./util/embeds";
 
 export async function startBot() {
     const client = new Client({
-        intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
+        intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.MessageContent],
         allowedMentions: { parse: ["users", "roles"], repliedUser: false }
     })
 
@@ -24,6 +25,7 @@ export async function startBot() {
 
 function registerListeners(client: Client) {
     registerInteractions(client)
+    registerNitroColorListener(client)
 
 
     //will be removed in some time

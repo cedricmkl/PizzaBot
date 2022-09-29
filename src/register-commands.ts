@@ -1,7 +1,28 @@
-import { REST, Routes, SlashCommandBuilder, SlashCommandStringOption } from "discord.js"
+import { PermissionsBitField, REST, Routes, SlashCommandBuilder, SlashCommandStringOption } from "discord.js"
 
 
 const commands = [
+    //color
+    new SlashCommandBuilder()
+        .setName("color")
+        .setDescription("Farben fuer Booster & Moderatoren.")
+        .addSubcommand((command) => command.setName("reset").setDescription("Setze deine Rollenfarbe zurueck."))
+        .addSubcommand((command) =>
+            command.setName("set").setDescription("Setze deine Farbe.")
+                .addStringOption(option => option.setName("color").setDescription("Die Farbe (HEX).").setRequired(true))),
+    //admin
+    new SlashCommandBuilder()
+        .setName("admin")
+        .setDescription("Admin Command")
+        .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator)
+        .addStringOption((option) =>
+            option.setName("action")
+                .setDescription("Die Aktion.")
+                .addChoices({
+                    name: "Rollen erstellen",
+                    value: "create_roles"
+                })
+                .setRequired(true)),
     //google
     new SlashCommandBuilder()
         .setName("google")

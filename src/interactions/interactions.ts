@@ -1,6 +1,9 @@
-import { AutocompleteInteraction, ButtonInteraction, ChatInputCommandInteraction, Client, CommandInteraction } from "discord.js";
+import { AutocompleteInteraction, ButtonInteraction, ChatInputCommandInteraction, Client, CommandInteraction, Interaction } from "discord.js";
 import { tagAutocomplete } from "./autocomplete/tag.autocomplete";
+import { rolesButtonSubmit } from "./button/roles.button";
 import { tagsRequestButtonSubmit } from "./button/tag-request.button";
+import { adminCommand } from "./command/admin.command";
+import { colorCommand } from "./command/color.command";
 import { googleCommand } from "./command/google.command";
 import { infoCommand } from "./command/info.command";
 import { tagCommand } from "./command/tag.command";
@@ -34,14 +37,16 @@ async function handleCommand(interaction: ChatInputCommandInteraction) {
             case "info":
                 await infoCommand(interaction)
                 break
+            case "admin":
+                await adminCommand(interaction)
+                break
+            case "color":
+                await colorCommand(interaction)
+                break
         }
     } catch (err) {
         console.error(err)
-        if (interaction.replied || interaction.deferred) {
-            await interaction.editReply("Es ist ein Fehler beim ausführen dieses Befehls aufgetreten.")
-        } else {
-            await interaction.reply("Es ist ein Fehler beim ausführen dieses Befehls aufgetreten.")
-        }
+        errorReply(interaction, "Es ist ein Fehler beim ausführen dieses Befehls aufgetreten", err, false)
     }
 }
 
@@ -59,10 +64,19 @@ async function handleAutoComplete(interaction: AutocompleteInteraction) {
 async function handleButton(interaction: ButtonInteraction) {
     console.log(`[BUTTON] ${interaction.customId} - ${interaction.user.tag}`)
 
-    switch (interaction.customId) {
-        case "tagrequest_accept":
-        case "tagrequest_reject":
-            await tagsRequestButtonSubmit(interaction)
-            break;
+    try {
+        if (interaction.customId.startsWith("tagrequest_accept")) await tagsRequestButtonSubmit(interaction)
+        else if (interaction.customId.startsWith("roles_")) await rolesButtonSubmit(interaction)
+    } catch (err) {
+        console.error(err)
+        await errorReply(interaction, "Es ist ein Fehler aufgetreten", err, true)
+    }
+}
+
+async function errorReply(interaction: ChatInputCommandInteraction | ButtonInteraction, message: string, err: Error, ephemeral: boolean) {
+    if (interaction.replied || interaction.deferred) {
+        await interaction.editReply({ content: `${message}: ${err.name}` })
+    } else {
+        await interaction.reply({ content: `${message}: ${err.name}`, ephemeral })
     }
 }
