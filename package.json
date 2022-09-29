@@ -8,7 +8,7 @@
     "dev": "nodemon -r dotenv/config src/index.ts dotenv_config_path=.env.development",
     "commands": "ts-node src/register-commands.ts",
     "commands-dev": "nodemon -r dotenv/config src/register-commands.ts dotenv_config_path=.env.development",
-    "start": "node ./build/main.js",
+    "start": "node ./build/index.js",
     "lint": "eslint"
   },
   "keywords": [],
