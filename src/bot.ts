@@ -8,7 +8,7 @@ import { errorEmbed } from "./util/embeds";
 export async function startBot() {
     const client = new Client({
         intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.MessageContent],
-        allowedMentions: { parse: ["users", "roles"], repliedUser: false }
+        allowedMentions: { parse: [], repliedUser: false, }
     })
 
     client.login(process.env.DISCORD_TOKEN)

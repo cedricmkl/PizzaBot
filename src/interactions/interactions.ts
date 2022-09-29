@@ -65,7 +65,7 @@ async function handleButton(interaction: ButtonInteraction) {
     console.log(`[BUTTON] ${interaction.customId} - ${interaction.user.tag}`)
 
     try {
-        if (interaction.customId.startsWith("tagrequest_accept")) await tagsRequestButtonSubmit(interaction)
+        if (interaction.customId.startsWith("tagrequest_")) await tagsRequestButtonSubmit(interaction)
         else if (interaction.customId.startsWith("roles_")) await rolesButtonSubmit(interaction)
     } catch (err) {
         console.error(err)
