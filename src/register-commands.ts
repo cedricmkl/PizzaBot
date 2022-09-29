@@ -1,5 +1,6 @@
-import { PermissionsBitField, REST, Routes, SlashCommandBuilder, SlashCommandStringOption } from "discord.js"
-
+import { PermissionsBitField, REST, Routes, SlashCommandBuilder } from "discord.js"
+import { config } from "dotenv"
+config()
 
 const commands = [
     //color

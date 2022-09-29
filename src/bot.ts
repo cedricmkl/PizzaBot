@@ -31,7 +31,7 @@ function registerListeners(client: Client) {
     //will be removed in some time
     client.on("messageCreate", async (message) => {
         if (message.author.bot) return
-        if (!message.content.startsWith("tag") || message.content.split(" ").length < 2) return
+        if (!message.content.toLowerCase().startsWith("tag") || message.content.split(" ").length < 2) return
         const input = message.content.split(" ")[1]
         const tag = await getTag(input)
 
