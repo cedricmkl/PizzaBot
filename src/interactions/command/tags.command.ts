@@ -1,8 +1,8 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, GuildMember } from "discord.js";
-import { clearTagCache, createTag, createTagRequest, getCachedTags, getTag } from "../../database/database";
-import { createEmbed, errorEmbed, successEmbed } from "../../util/embeds";
-import { formatTagName } from "../../util/names";
-import { isModerator } from "../../util/permissions";
+import {ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, GuildMember} from "discord.js";
+import {clearTagCache, createTag, createTagRequest, getCachedTags, getTag} from "../../database/database";
+import {createEmbed, errorEmbed, successEmbed} from "../../util/embeds";
+import {formatTagName} from "../../util/names";
+import {isModerator} from "../../util/permissions";
 
 export async function tagsCommand(interaction: ChatInputCommandInteraction) {
     switch (interaction.options.getSubcommandGroup() || interaction.options.getSubcommand(true)) {
@@ -31,12 +31,18 @@ export async function tagsCommand(interaction: ChatInputCommandInteraction) {
 
 async function tagsList(interaction: ChatInputCommandInteraction) {
     const tags = await getCachedTags()
-    await interaction.reply(`Alle verfügbaren Tags: ${tags.map(value => "`" + value.name + "`").join(", ")}`)
+    await interaction.reply({
+        content: `Alle verfügbaren Tags: ${tags.map(value => "`" + value.name + "`").join(", ")}`,
+        ephemeral: true
+    })
 }
 
 async function tagsInfo(interaction: ChatInputCommandInteraction, name: string) {
     const tag = await getTag(name)
-    if (!tag) return await interaction.reply({ embeds: [errorEmbed("Fehler", "Der Tag wurde nicht gefunden.")] })
+    if (!tag) return await interaction.reply({
+        embeds: [errorEmbed("Fehler", "Der Tag wurde nicht gefunden.")],
+        ephemeral: true
+    })
     await interaction.reply({
         embeds: [
             createEmbed(`Tag ${tag.name}`, null, [{
@@ -44,21 +50,25 @@ async function tagsInfo(interaction: ChatInputCommandInteraction, name: string) 
                 value: tag.aliases.length > 0 ? tag.aliases.map(value => "`" + value + "`").join(", ") : "keine",
                 inline: true
             },
-            {
-                name: "Erstellt",
-                value: `<t:${Math.round(tag.createdAt.getTime() / 1000)}> (<t:${Math.round(tag.createdAt.getTime() / 1000)}:R>)`,
-                inline: true
-            }])
-        ]
+                {
+                    name: "Erstellt",
+                    value: `<t:${Math.round(tag.createdAt.getTime() / 1000)}> (<t:${Math.round(tag.createdAt.getTime() / 1000)}:R>)`,
+                    inline: true
+                }])
+        ], ephemeral: true
     })
 }
 
 async function tagsCreate(interaction: ChatInputCommandInteraction, name: string) {
-    if (await getTag(name)) return await interaction.reply({ embeds: [errorEmbed("Einen Tag mit diesem Namen gibt es bereits.")] })
+    if (await getTag(name)) return await interaction.reply({
+        embeds: [errorEmbed("Einen Tag mit diesem Namen gibt es bereits.")],
+        ephemeral: true
+    })
 
     await interaction.reply({
         embeds: [createEmbed("Gebe den Inhalt an",
-            "Gebe den Inhalt des Tags an. Du hast dafür 5 Minuten Zeit.")]
+            "Gebe den Inhalt des Tags an. Du hast dafür 5 Minuten Zeit.")],
+        ephemeral: true
     })
 
     interaction.channel.awaitMessages({
@@ -106,11 +116,15 @@ async function tagsCreate(interaction: ChatInputCommandInteraction, name: string
 
 async function tagsEdit(interaction: ChatInputCommandInteraction, name: string) {
     const tag = await getTag(name)
-    if (!tag) return await interaction.reply({ embeds: [errorEmbed("Fehler", "Einen Tag mit diesem Namen gibt es nicht.")] })
+    if (!tag) return await interaction.reply({
+        embeds: [errorEmbed("Fehler", "Einen Tag mit diesem Namen gibt es nicht.")],
+        ephemeral: true
+    })
 
     await interaction.reply({
         embeds: [createEmbed("Gebe den Inhalt an",
-            "Gebe den Inhalt des Tags an. Du hast dafür 5 Minuten Zeit.")]
+            "Gebe den Inhalt des Tags an. Du hast dafür 5 Minuten Zeit.")],
+        ephemeral: true
     })
 
     interaction.channel.awaitMessages({
@@ -161,7 +175,7 @@ async function tagsDelete(interaction: ChatInputCommandInteraction, name: string
     if (!isModerator(interaction.member as GuildMember)) return
 
     const tag = await getTag(name)
-    if (!tag) return await interaction.reply({ content: "Der Tag wurde nicht gefunden.", ephemeral: true })
+    if (!tag) return await interaction.reply({content: "Der Tag wurde nicht gefunden.", ephemeral: true})
 
     await tag.delete()
     clearTagCache()
