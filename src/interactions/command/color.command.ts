@@ -1,22 +1,23 @@
-import { ChatInputCommandInteraction, Client, GuildMember, Role, Snowflake } from "discord.js";
+import {ChatInputCommandInteraction, Client, GuildMember, Role, Snowflake} from "discord.js";
 import customColorModel from "../../database/model/custom-color.model";
-import { isModerator } from "../../util/permissions";
+import {isModerator} from "../../util/permissions";
 
 const COLOR_REGEX = new RegExp(/^#?([0-9a-f]{6})$/i)
+
 export async function colorCommand(interaction: ChatInputCommandInteraction) {
     const member = interaction.member as GuildMember
-    const customColor = await customColorModel.findOne({ userId: interaction.user.id as string })
+    const customColor = await customColorModel.findOne({userId: interaction.user.id as string})
 
     switch (interaction.options.getSubcommand()) {
         case "reset": {
             if (customColor == null) {
-                return await interaction.reply({ content: "Du besitzt keine Farbe!" })
+                return await interaction.reply({content: "Du besitzt keine Farbe!", ephemeral: true})
             }
 
             await customColor.delete()
             await interaction.guild.roles.delete(customColor.roleId as Snowflake)
 
-            await interaction.reply({ content: "Deine Farbe wurde gelöscht." })
+            await interaction.reply({content: "Deine Farbe wurde gelöscht.", ephemeral: true})
             break
         }
         case "set": {
@@ -25,7 +26,7 @@ export async function colorCommand(interaction: ChatInputCommandInteraction) {
             let matches = COLOR_REGEX.exec(input)
 
             if (matches == null) {
-                return await interaction.reply("Bitte gebe eine HEX Farbe ein.")
+                return await interaction.reply({content: "Bitte gebe eine HEX Farbe ein.", ephemeral: true})
             }
 
             const color = matches[1]
@@ -52,7 +53,10 @@ export async function colorCommand(interaction: ChatInputCommandInteraction) {
                     }
                 )
             }
-            return await interaction.reply(`Deine Farbe wurde erfolgreich zu ${role.toString()} gesetzt.`)
+            return await interaction.reply({
+                content: `Deine Farbe wurde erfolgreich zu ${role.toString()} gesetzt.`,
+                ephemeral: true
+            })
         }
     }
 
@@ -70,7 +74,7 @@ async function createRole(interaction: ChatInputCommandInteraction, color: strin
 export function registerNitroColorListener(client: Client) {
     client.on("guildMemberUpdate", async (oldMember, newMember) => {
         if (oldMember.premiumSince && !newMember.premiumSince) {
-            const customColor = await customColorModel.findOne({ userId: newMember.user.id as string })
+            const customColor = await customColorModel.findOne({userId: newMember.user.id as string})
             if (!customColor) return
             await customColor.delete()
             await newMember.guild.roles.delete(customColor.roleId as Snowflake)
@@ -78,7 +82,7 @@ export function registerNitroColorListener(client: Client) {
     })
 
     client.on("guildMemberRemove", async (member) => {
-        const customColor = await customColorModel.findOne({ userId: member.user.id as string })
+        const customColor = await customColorModel.findOne({userId: member.user.id as string})
         if (!customColor) return
         await customColor.delete()
         await member.guild.roles.delete(customColor.roleId as Snowflake)
