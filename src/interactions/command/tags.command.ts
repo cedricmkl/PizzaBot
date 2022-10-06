@@ -31,10 +31,7 @@ export async function tagsCommand(interaction: ChatInputCommandInteraction) {
 
 async function tagsList(interaction: ChatInputCommandInteraction) {
     const tags = await getCachedTags()
-    await interaction.reply({
-        content: `Alle verfügbaren Tags: ${tags.map(value => "`" + value.name + "`").join(", ")}`,
-        ephemeral: true
-    })
+    await interaction.reply(`Alle verfügbaren Tags: ${tags.map(value => "`" + value.name + "`").join(", ")}`)
 }
 
 async function tagsInfo(interaction: ChatInputCommandInteraction, name: string) {
@@ -55,7 +52,7 @@ async function tagsInfo(interaction: ChatInputCommandInteraction, name: string) 
                     value: `<t:${Math.round(tag.createdAt.getTime() / 1000)}> (<t:${Math.round(tag.createdAt.getTime() / 1000)}:R>)`,
                     inline: true
                 }])
-        ], ephemeral: true
+        ]
     })
 }
 
@@ -67,8 +64,7 @@ async function tagsCreate(interaction: ChatInputCommandInteraction, name: string
 
     await interaction.reply({
         embeds: [createEmbed("Gebe den Inhalt an",
-            "Gebe den Inhalt des Tags an. Du hast dafür 5 Minuten Zeit.")],
-        ephemeral: true
+            "Gebe den Inhalt des Tags an. Du hast dafür 5 Minuten Zeit.")]
     })
 
     interaction.channel.awaitMessages({
@@ -123,8 +119,7 @@ async function tagsEdit(interaction: ChatInputCommandInteraction, name: string) 
 
     await interaction.reply({
         embeds: [createEmbed("Gebe den Inhalt an",
-            "Gebe den Inhalt des Tags an. Du hast dafür 5 Minuten Zeit.")],
-        ephemeral: true
+            "Gebe den Inhalt des Tags an. Du hast dafür 5 Minuten Zeit.")]
     })
 
     interaction.channel.awaitMessages({
