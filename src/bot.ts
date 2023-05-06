@@ -41,4 +41,14 @@ function registerListeners(client: Client) {
         }
         await message.reply(tag.content)
     })
+
+    client.on("threadCreate", function(thread, newlyCreated) {
+        const embed = new EmbedBuilder()
+        embed.setTitle("Willkommen im Support-Thread!")
+        embed.setDescription("Hier kann dir nun von den anderen Mitgliedern des Servers geholfen werden.\nBitte schick uns schonmal deinen Code und deinen Fehler und warte dann ab.")
+    
+        if(newlyCreated) {
+            thread.send({embeds: [embed]})
+        }
+    })
 }
