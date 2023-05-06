@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits } from "discord.js";
+import { Client, GatewayIntentBits, EmbedBuilder} from "discord.js";
 import { exit } from "process";
 import { getTag } from "./database/database";
 import { registerNitroColorListener } from "./interactions/command/color.command";
