@@ -44,9 +44,9 @@ function registerListeners(client: Client) {
 
     client.on("threadCreate", function(thread, newlyCreated) {
         const embed = new EmbedBuilder()
-        embed.setTitle("Willkommen im Support-Thread!")
-        embed.setDescription("Hier kann dir nun von den anderen Mitgliedern des Servers geholfen werden.\nBitte schick uns schonmal deinen Code und deinen Fehler und warte dann ab.")
-    
+        embed.setTitle("Tipps zum Fragestellen")
+        embed.setDescription("Um dir bestmöglich und schnell helfen zu können, teile bitte alle relevanten Informationen zu deinem Problem in diesem Thread. Dazu gehören eine Beschreibung des Problems, wie es eigentlich funktionieren sollte und falls vorhanden, Code-Snippets oder Fehlermeldungen. Weitere Informationen darüber, wie du deine Fragen am besten stellen kannst, findest du in dem Kanal <#808665677929512961>.")
+        
         if(newlyCreated) {
             thread.send({embeds: [embed]})
         }
