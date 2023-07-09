@@ -1,0 +1,1 @@
+Hey, du hast gerade vermutlich eine Frage gestellt, die du sehr leicht selber lösen könntest, indem du die Grundlagen der Sprache lernst. Wir bitten dich, die Grundlagen der Sprache zu lernen, bevor du mit einer API wie der Spigot API oder der Discord API anfängst!

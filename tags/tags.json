@@ -1,0 +1,566 @@
+[
+    {
+        "_id": {
+            "$oid": "60400958270dac5a72a90704"
+        },
+        "createdAt": {
+            "$date": "2021-03-02T10:23:42.972Z"
+        },
+        "name": "ask",
+        "content": "Don't ask to ask, just ask ",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "6048d99ab686e3622e96a882"
+        },
+        "createdAt": {
+            "$date": "2021-03-05T08:06:32.4Z"
+        },
+        "name": "hilfmir",
+        "content": "Hey, es ist nicht die Pflicht von Irgendjemanden dir zu helfen, wenn jemand zeit hat und du deine Frage gut in <#808665677929512961> stellst, wird dir wahrscheinlich geholfen 🙂 ! ",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "605c788cc239791ed6baa005"
+        },
+        "createdAt": {
+            "$date": "2021-03-25T11:44:21.841Z"
+        },
+        "name": "datasource",
+        "content": "Wenn du das liest, arbeitest du vermutlich mit einer Datenbank und benutzt keine Data Source.\n\nVermutlich hast du auch eine der folgenden Dinge in deinem Code `public static Connection`, `MySQL.java`.\nEventuell hast du auch noch nie etwas von `Try-With-Resources` gehört. Im schlimmsten Fall hast du auch noch nie eine `close()` Methode aufgerufen.\n\nUm immer eine stabile Verbindung zu deiner Datenbank zu haben ist es essentiell, dass etwas deine Verbindungen überwacht.\nDas übernimmt die DataSource für dich. Außerdem kannst du damit parallele verbindungen zu deiner Datenbank aufbauen.\n\nEin `Try-With-Resources` verhindert außerdem Memory Leaks und gibt deine Connection automatisch wieder frei, wenn du sie nicht mehr brauchst.\n\nWenn du mehr wissen willst (**das willst du!**), dann lies dir bitte diesen Guide durch.\nEnglisch: <https://www.spigotmc.org/threads/480002/>\nDeutsch: <https://minecraft-server.eu/forum/threads/63964/> ",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "6040a165270dac5a72a90708"
+        },
+        "createdAt": {
+            "$date": "2021-03-02T10:23:42.972Z"
+        },
+        "name": "paste",
+        "content": "Um dir besser helfen zu können, benötigen wir deinen Quellcode und ggf. deine Fehlermeldung. Um diese mit uns zu teilen, kannst du eine der folgenden Seiten verwenden:\n- <https://haste.l4zs.de/>\n- <https://gist.github.com/>\n- <https://pastefy.ga/>\n- <https://haste.landania.dev/>\n\n### Anwendung\nhttps://cdn.discordapp.com/attachments/754582023141720085/1112469623699411055/paste.mp4",
+        "__v": 2,
+        "aliases": [
+            "haste"
+        ]
+    },
+    {
+        "_id": {
+            "$oid": "605e52efc239791ed6baa006"
+        },
+        "createdAt": {
+            "$date": "2021-03-25T11:44:21.841Z"
+        },
+        "name": "commonerror",
+        "content": "Hast du schonmal nachgeschaut, ob du deinen Listener registriert hast? Oder deinen Command? Hast du ihn auch in der plugin.yml eingetragen? ",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "6065a0070bc32d7dbab20ff3"
+        },
+        "createdAt": {
+            "$date": "2021-03-30T06:15:51.417Z"
+        },
+        "name": "debug",
+        "content": "Dein Plugin mit Intellij richtig debuggen: <https://www.spigotmc.org/wiki/intellij-debug-your-plugin> ",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "6060a36468dbdb1ab21bd13d"
+        },
+        "createdAt": {
+            "$date": "2021-03-28T15:36:18.549Z"
+        },
+        "name": "symbols",
+        "content": "Hier findest du eine Auflistung von ein paar schönen Symbolen:\n+ ›\n+ ‹\n+ »\n+ «\n+ ‣\n+ ·\n+ ×\n+ ∙\nDir reicht das nicht? Schau dir doch mal die Webseite an: <https://coolsymbol.com/> :)",
+        "__v": 2,
+        "aliases": [
+            "symbole",
+            "symbol"
+        ]
+    },
+    {
+        "_id": {
+            "$oid": "6066313c1998756c9c848766"
+        },
+        "createdAt": {
+            "$date": "2021-04-01T17:49:47.882Z"
+        },
+        "name": "naming",
+        "content": "Um guten & lesbaren Quelltext zu schreiben musst du auch Conventions von den jeweiligen Programmiersprachen benutzen. Conventions sind nichts anderes als Regeln für die Benennung von Klassen, Paketen, Variablen usw.\nConventions von einigen Sprachen:\n\n· Java -    <https://www.oracle.com/technetwork/java/codeconventions-150003.pdf>\n                 <https://google.github.io/styleguide/javaguide.html> (neu)\n· Kotlin - <https://kotlinlang.org/docs/coding-conventions.html>\n· C++    - <https://www.geeksforgeeks.org/naming-convention-in-c/>\n\nWenn du weitere Conventions für andere Sprachen brauchst, suche einfach im Internet danach.",
+        "__v": 3,
+        "aliases": [
+            "conventions",
+            "naming-conventions"
+        ]
+    },
+    {
+        "_id": {
+            "$oid": "6074799f87b24139b9cf6e63"
+        },
+        "createdAt": {
+            "$date": "2021-04-02T09:06:14.108Z"
+        },
+        "name": "java-stacktrace",
+        "content": "Hallo zukünftiger Programmierer.\nOffenbar weißt du nicht, wie man einen Stacktrace liest. Zum programmieren ist das aber essentiell.\nLies dir bitte das hier durch und verinnerliche es:\n<https://stackoverflow.com/a/3988794> ",
+        "__v": 1,
+        "aliases": [
+            "stacktrace"
+        ]
+    },
+    {
+        "_id": {
+            "$oid": "607466e287b24139b9cf6e62"
+        },
+        "createdAt": {
+            "$date": "2021-04-02T09:06:14.108Z"
+        },
+        "name": "whydocker",
+        "content": "https://chojos.lewds.de/Disgusting_BatVeery_is_Burly.png ",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "60395e840e2e6c126c68e246"
+        },
+        "createdAt": {
+            "$date": "2021-02-25T15:56:10.919Z"
+        },
+        "name": "hilfe",
+        "content": "Bitte lese dir <#808665677929512961> durch und schildere dann dein Problem in dem richtigen coding Channel. Falls dein Problem nichts mit coden zu tun hat Frage bitte in <#798828200884305940> nach. Nur so kann dir geholfen werden! 🙂 ",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "6075fa2a87b24139b9cf6e64"
+        },
+        "createdAt": {
+            "$date": "2021-04-02T09:06:14.108Z"
+        },
+        "name": "discordjserror",
+        "content": "Die häufigsten Fehler:\n> Ihr müsst bei `new Discord.Client()` Client groß schreiben!\n\n> Wenn ihr irgend etwas von Discord.js Importiert, müsst ihr immer eure Discord Instanz, die wir festgelegt haben (`const Discord = require(\"discord.js\")`), benutzen um etwas zu Importieren also z.b `const embed = new Discord.MessageEmbed()`. Achtet dabei bitte darauf das ihr Groß und Kleinschreibung beachten müsst!\n\n> Ihr müsst immer so viele Klammern wie ihr auf macht (egal ob (), {} oder [] ) zu machen!\n\n> Ihr müsst die Config Datei (und alle weiteren Dateien) speichern (in VSC)!\n\n> Wenn ihr await benutzt muss eure funktion async sein! Dass macht ihr einfach indem ihr das Keyword async vor euer Funktion packt (das gilt auch für lambdas, also z.b. `async (message) => {}`)!\n\n> Ihr müsst immer Intents angeben, dazu findet ihr hier mehr: <https://discordjs.guide/popular-topics/intents.html>",
+        "__v": 1,
+        "aliases": []
+    },
+    {
+        "_id": {
+            "$oid": "6076d29b87b24139b9cf6e65"
+        },
+        "createdAt": {
+            "$date": "2021-04-02T09:06:14.108Z"
+        },
+        "name": "skid",
+        "content": "Skidding nimmt Bezug auf eine Person, die fremden Quellcode für eigene Projekte zusammenkopiert, um deren Effekte zu nutzen, ohne jedoch den Code zu verstehen. Dies ist jedoch abzugrenzen von der Benutzung von Programmbibliotheken. ",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "6079ba6087b24139b9cf6e68"
+        },
+        "createdAt": {
+            "$date": "2021-04-02T09:06:14.108Z"
+        },
+        "name": "tas",
+        "content": "https://tryitands.ee/ ",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "6079bcaf87b24139b9cf6e69"
+        },
+        "createdAt": {
+            "$date": "2021-04-02T09:06:14.108Z"
+        },
+        "name": "metafrage",
+        "content": "http://metafrage.de ",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "6079362d87b24139b9cf6e67"
+        },
+        "createdAt": {
+            "$date": "2021-04-02T09:06:14.108Z"
+        },
+        "name": "spam",
+        "content": "https://tenor.com/view/widehardo-clap-frode-mills-twitch-gif-18775111\nBitte nicht spammen egal ob Pings oder Nachrichten es nervt. Dankeschön",
+        "__v": 1,
+        "aliases": []
+    },
+    {
+        "_id": {
+            "$oid": "607aad5f87b24139b9cf6e6a"
+        },
+        "createdAt": {
+            "$date": "2021-04-02T09:06:14.108Z"
+        },
+        "name": "java-lernen",
+        "content": "Falls du Java lernen möchtest sind hier ein paar Links die dir sehr helfen:\n- <https://java-programming.mooc.fi/> (Für Neulinge)\n- <https://openbook.rheinwerk-verlag.de/javainsel/>\n- <https://codegym.cc/> (Für Neulinge - in deutsch verfügbar)\n- <https://www.codecademy.com/catalog/language/java> (Für Neulinge)\nDokumentation, Referenz:\n- <https://docs.oracle.com/javase/tutorial/> (Offizielle Einführung; Primär für Menschen mit Vorerfahrung im Programmieren)\n- <https://docs.oracle.com/en/java/javase/11/docs/api/index.html>  (API-Dokumentation; zum schnellen Nachgucken von Klassen, Methoden etc.)\n- <https://learnxinyminutes.com/docs/de-de/java-de/> (Übersicht über Features und Syntax, Quickstart für Menschen mit Vorerfahrung im Programmieren)\n- <https://java-design-patterns.com/> (OOP, Patterns)\n- <https://refactoring.guru/> (OOP, Patterns)\nCommunities, Foren:\n- <https://stackoverflow.com/> (Jede Java-Frage wurde dort bereits beantwortet. Das ist Fakt.)",
+        "__v": 2,
+        "aliases": [
+            "jl"
+        ]
+    },
+    {
+        "_id": {
+            "$oid": "60817f3987b24139b9cf6e6c"
+        },
+        "createdAt": {
+            "$date": "2021-04-02T09:06:14.108Z"
+        },
+        "name": "dateiendungen",
+        "content": "Um eine JavaScript usw. Dattei zu erstellen musst du Dateiendungen aktivieren. https://cdn.discordapp.com/attachments/754582023141720085/853699130655375380/index.png",
+        "__v": 1,
+        "aliases": [
+            "dateiendung"
+        ]
+    },
+    {
+        "_id": {
+            "$oid": "6041e27816484e58b1e9eb66"
+        },
+        "createdAt": {
+            "$date": "2021-03-04T15:18:04.439Z"
+        },
+        "name": "spoonfeeding",
+        "content": "Hey, wir Spoonfeeden hier nicht!\nUnd auch du solltest niemanden Spoonfeeden!\nSpoonfeeden nimmt die Herausfoderung beim Programmieren und bringt nichts, da du nichts lernst.\nDas ist so, als ob du Hausaufgaben abschreibst, und wie auch da schon die Lehrer sagen \"Macht das nichts, es bringt euch nichts und ihr lernt es nicht!\"\n\nAlso: Wir Spoonfeeden niemanden!\nMehr Infos? Schau dich doch hier mal um -> <https://dictionary.cambridge.org/dictionary/english/spoon-feeding> ",
+        "__v": 1,
+        "aliases": [
+            "spoonfeed"
+        ]
+    },
+    {
+        "_id": {
+            "$oid": "60400515270dac5a72a90703"
+        },
+        "createdAt": {
+            "$date": "2021-03-02T10:23:42.972Z"
+        },
+        "name": "ping",
+        "content": "*Ping Pong* Ich weiß ja nicht wie du das findest, aber wir mögen es nicht so random gepingt zu werden. Falls du was brauchst gedulde dich etwas ;) ",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "608b17f98d6fea11309f766b"
+        },
+        "createdAt": {
+            "$date": "2021-04-27T20:01:50.03Z"
+        },
+        "name": "tag",
+        "content": "TAG TAG TAG TAG TAG TAG ",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "6087c07bbdac1e5b38716d81"
+        },
+        "createdAt": {
+            "$date": "2021-04-25T19:04:32.674Z"
+        },
+        "name": "java",
+        "content": "Für Spigot ab der Minecraft Version 1.17 brauchst du Java 16. Für alle Minecraft Versionen unter 1.17 brauchst du minimal Java 8 und maximal Java 15 (Mit Ausnahmen von Paper).\nJava kannst du hier downloaden: <https://adoptopenjdk.net/>\nSchlaubi hat auch ein cooles Tool zum Herunterladen programmiert.\n➡️ <https://github.com/DRSchlaubi/mcserv>",
+        "__v": 1,
+        "aliases": []
+    },
+    {
+        "_id": {
+            "$oid": "60a1aa84c28ca47b32935e72"
+        },
+        "createdAt": {
+            "$date": "2021-05-16T19:42:58.956Z"
+        },
+        "name": "database",
+        "content": "Hallo Nutzer :3\n\nWenn du eine Datenbank in deinem Projekt haben willst, gibt es oftmals mehrere Wege die zum Ziel führen. Leider sind viele dieser Wege zwar auf dem ersten Blick durchaus funktional, jedoch oftmals weder Stabil noch empfehlenswert.\n\nUm dir den Einstieg zu erleichtern wurde ein Repo angelegt mit einer ausführlichen Anleitung und einer Beispielhaften Implementierung.\n\nDieses Repo wird dir das minimalste Wissen vermitteln, was du benötigst. Du magst zwar denken, dass das recht viel ist, jedoch ist das gerade mal der Anfang. Es gibt noch so vieles mehr was man mit Datenbanken machen kann!\n\nAlso los gehts!\n<https://github.com/RainbowDashLabs/BasicSQLPlugin>",
+        "__v": 1,
+        "aliases": []
+    },
+    {
+        "_id": {
+            "$oid": "60a3cf3ec28ca47b32935e73"
+        },
+        "createdAt": {
+            "$date": "2021-05-16T19:42:58.956Z"
+        },
+        "name": "satzzeichen",
+        "content": "Vor Satzzeichen macht man **kein** Leerzeichen. Jeder der ein Leerzeichen vor einem Satzzeichen macht sollte die 3. Klasse wiederholen. ",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "60a3e97bc28ca47b32935e76"
+        },
+        "createdAt": {
+            "$date": "2021-05-16T19:42:58.956Z"
+        },
+        "name": "require",
+        "content": "Um deinen JS-File zu importieren gibt es viele Wege. Je nach Sprache und Framework immer andere.\nDieser Post stellt sehr viele von ihnen dar.\n<https://stackoverflow.com/a/950146> ",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "60ae4cdddccc052adbe688f0"
+        },
+        "createdAt": {
+            "$date": "2021-05-26T11:55:05.952Z"
+        },
+        "name": "logging",
+        "content": "Hallo c:\nDu möchtest anscheinend etwas in deinem Plugin loggen.\nDas solltest du jedoch nicht über `ConsoleSender` oder `System.out.println()` machen.\nDafür gibt es den Plugin Logger. Diesen bekommst du wenn du in deiner Plugin Klasse (da wo onEnable und so ist) `Plugin#getLogger()` aufrufst.\nDieser Logger schreibt für dich bereits alles in den Spigot Log zusammen mit deinem Pluginnamen.\n\nDu darfst dafür sogar ausnahmsweise eine statische Methode in deiner Plugin Klasse anlegen, die den PluginLogger zurückgibt. Es ist jedoch immer besser die Logger Instanz dorthin mitzugeben, wo geloggt werden soll. Die meisten deiner Klassen haben vermutlich ohnehin eine Plugin Referenz, aus der du dir jederzeit den Logger holen kannst c:\n\n```java\n// normaler info log\nlogger.info(\"Das ist eine Info.\");\nlogger.warning(\"Hier is etwas kaputt\")\n\n// Exception loggen\n// Wir loggen die Exception auf den SEVERE Level. Das ist das höchste Level. Das benutzt man für kritische Fehler. Weniger kritische Fehler sollten mit WARNING geloggt werden.\ncatch(Exception e) {\n  logger.log(LEVEL.SEVERE, \"Da ging wohl was schief.\", e)\n}\n```\n\nAlso dann! Frohes loggen! ",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "60c261caca63dd0c90a2f7b2"
+        },
+        "createdAt": {
+            "$date": "2021-06-10T19:02:34.754Z"
+        },
+        "aliases": [],
+        "name": "geht-nicht",
+        "content": "Beschreibe bitte genau dein Problem und versorge uns mit relevantem Code, \"Geht nicht\" hilft nicht weiter und wir können dir nicht helfen, danke!",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "60c75c99ca63dd0c90a2f7b3"
+        },
+        "createdAt": {
+            "$date": "2021-06-14T13:41:45.382Z"
+        },
+        "aliases": [],
+        "name": "eclipse",
+        "content": "Jeder hasst Eclipse, aber wieso?\nEclipse ist an sich nicht schlecht aber jeder, der IntelliJ benutzt (auch ich), will kein Eclipse mehr benutzen.\nUm tatsächlich alle Fehler aufzuschreiben ist hier eine Liste an Dingen, die IntelliJ IDEA besser macht.\n\n- Besseres Context Verständnis\nEclipse ignoriert den Context einfach komplett. Das erste was IntelliJ macht, ist dein ganzen Projekt scannen und indexieren. Das erlaubt eine bessere und gezieltere Suche von Objekten.\n\n- Refactorings\nEs gibt für alles ein Refactoring, und nein: Refactoring ist kein Synonym für Rename\n\n- Inspections\nIntelliJ sagt dir was du falsch machst und gibt dir oft sogar automatische Umwandlungen in besseren Code an. Das hilft dir zu lernen, wie du es direkt am Anfang richtig machen kannst.\n\n- Bessere Navigation\nEclipse hat Tabs, aber Tabs sind dumm. IntelliJ lässt dich nach allem suchen und dadurch findest du Dinge schneller. Du kannst zwischen den letzten Positionen in deiner aktuellen File wechseln, ohne 20 Stunden das Scrollrad deiner Maus zu benutzen.\n\n- Spellchecker \nIst praktisch TRUST ME\n\n- Kluges Code Complete\nWenn du folgenden Code hast\nBufferedReader reader = new B\n\n\nDann würde dir Eclipse alles aus dem gesamten Universum geben was mit B anfängt. IntelliJ gibt dir nur die Dinge die BufferedReader implementieren.\n\n- Hotkeys für alles\nEs gibt für alles Hotkeys, sogar zum Resizen von Windows\n\nAußerdem gibt es noch ne Menge andere Features wie Scratch Files, Inject Language/Reference for string und alles mögliche was ich jetzt vergesse oder nicht einmal kenne. Wenn ihr wirklich wissen wollt wieso IntelliJ besser ist schaut euch dieses Video an:\n\nhttps://youtu.be/1rT4ZLhkpE0\nCredits: Schlaubi",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "611575d04f9f36217b7a0a42"
+        },
+        "createdAt": {
+            "$date": "2021-08-12T19:26:08.385Z"
+        },
+        "aliases": [],
+        "name": "reload",
+        "content": "Du solltest deinen Minecraft Server niemals reloaden. Aber warum? \nEin Beispiel: Ein Reload setzt alle Variablen & co zurück. D.h. wenn im Plugin ein Spieler-Displayname gesetzt wurde wird dieser resettet und der Spieler muss erneut joinen.\nMehr Infos unter: <https://madelinemiller.dev/blog/problem-with-reload/>",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "60e87cf6f04f3d05332fffd2"
+        },
+        "createdAt": {
+            "$date": "2021-07-09T16:44:38.116Z"
+        },
+        "aliases": [
+            "location"
+        ],
+        "name": "getlocation",
+        "content": "Du versuchst warscheinlich gerade in einer älteren Version eine Location aus einer Config abzurufen. Doch in älteren Versionen gibt es die Methode `getLocation` nicht.\nDu musst in älteren Versionen die Methode `get` verwenden und es zu einer Location casten.\nVerwende dazu also statt\n```java\nLocation location = config.getLocation()\n```\neinfach\n```java\nLocation location = (Location) config.get()\n```\nAber es gibt mehrere Gründe keine veralteten Versionen zu benutzen.",
+        "__v": 1
+    },
+    {
+        "_id": {
+            "$oid": "6143922edf604400149ed47e"
+        },
+        "createdAt": {
+            "$date": "2021-09-16T18:51:26.592Z"
+        },
+        "aliases": [
+            "abortcontroller",
+            "abort-controller"
+        ],
+        "name": "nodejs-v13",
+        "content": "Wenn du den Fehler `AbortController is not defined ` bekommst, musst du nichts weiter definieren. Diesen Fehler bekommst du wenn du Discord.JS v13 mit einer NodeJS Version verwendest, die veraltet ist. Für Discord.JS v13 brauchst du Node.JS v16. Du kannst die aktuellste NodeJS Version unter <https://nodejs.org> herunterladen, Linux Benutzer können auch den Node Version Manager für eine einfachere Verwaltung der NodeJS Versionen benutzen: https://github.com/nvm-sh/nvm.",
+        "__v": 2
+    },
+    {
+        "_id": {
+            "$oid": "61167e324f9f36217b7a0a43"
+        },
+        "createdAt": {
+            "$date": "2021-08-13T14:14:10.526Z"
+        },
+        "aliases": [
+            "intents"
+        ],
+        "name": "v13-intents",
+        "content": "Für viele Events, die du abfangen möchtest, gibt es sogenannte Intents, die du bei deinem Client Constructor angeben **musst** (Falls du keine benötigst brauchst du ein leeres Array). Da Discord.js v13 die Discord API v9 benutzt, musst du nun diese angeben! \nHier gibt es noch weitere Infos wie man Intents benutzt:\n<https://discordjs.guide/popular-topics/intents.html>\nund hier eine Liste aller Intents: <https://discord.com/developers/docs/topics/gateway#list-of-intents>\nManche Intents musst du in deinem Discord Developer Portal aktivieren: <https://discord.com/developers/applications>",
+        "__v": 1
+    },
+    {
+        "_id": {
+            "$oid": "615f6cdddf604400149ed53f"
+        },
+        "createdAt": {
+            "$date": "2021-10-07T21:55:41.389Z"
+        },
+        "aliases": [
+            "50001"
+        ],
+        "name": "missing-access",
+        "content": "Wenn du den Fehler `DiscordAPIError[50001]: Missing Access` im Bezug mit Slash Commands bekommst, hast du vermutlich bei der Erstellung des Einlandungslinks nur die \"scope\" bot angeklickt. Damit dein Bot Slash Commands erstellen und verändern kann, muss er mit der scope `applications.commands` **neu** eingeladen werden. Das machst du einfach indem du in deinem Developer Dashboard einen neuen Invitelink mit der scope erstellst und deinen bot neu einlädst. Das sieht dann so aus: https://cdn.discordapp.com/attachments/846803986052415518/895789553275785217/unknown.png",
+        "__v": 1
+    },
+    {
+        "_id": {
+            "$oid": "60f28567f04f3d05332fffd5"
+        },
+        "createdAt": {
+            "$date": "2021-07-17T07:23:19.144Z"
+        },
+        "aliases": [],
+        "name": "falscher-channel",
+        "content": "Du hast vermutlich gerade etwas geschrieben, was nicht in diesen Channel gehört. Bitte schreibe das in einem anderem Channel, der dazu da ist.",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "60ce370e6ce4047618ea3cb0"
+        },
+        "createdAt": {
+            "$date": "2021-06-19T18:27:26.513Z"
+        },
+        "aliases": [],
+        "name": "basics",
+        "content": "Hey, du hast gerade vermutlich eine Frage gestellt, die du sehr leicht selber lösen könntest, indem du die Grundlagen der Sprache lernst. Wir bitten dich, die Grundlagen der Sprache zu lernen, bevor du mit einer API wie der Spigot API oder der Discord API anfängst!",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "6110d76e3203f53fcfbfda25"
+        },
+        "createdAt": {
+            "$date": "2021-08-09T07:21:18.836Z"
+        },
+        "aliases": [],
+        "name": "v13",
+        "content": "Wenn ihr Discordjs benutzt, kann es sein dass bei euch manche Sachen nicht funktionieren, weil sie nicht mit der neuen v13 kompatibel sind! Guckt euch dazu am besten das hier an: https://discordjs.guide/additional-info/changes-in-v13.html",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "615c953fdf604400149ed51a"
+        },
+        "createdAt": {
+            "$date": "2021-10-05T18:11:11.279Z"
+        },
+        "aliases": [
+            "listeners",
+            "event",
+            "events"
+        ],
+        "name": "listener",
+        "content": "Irgendwann in deiner Spigot-Laufbahn willst du nicht nur Commands erstellen, sondern auch bei anderen Aktionen, wie zum Beispiel beim Chatten etwas ausführen. Dazu gibt es Events. Das Prinzip ist einfach, du hörst auf ein Event, Spigot führt es für dich aus und du kannst dann alles machen was du willst. Die Umsetzung ist auch nicht so schwer, einen Guide dazu findest du hier: <https://www.spigotmc.org/wiki/using-the-event-api/>",
+        "__v": 3
+    },
+    {
+        "_id": {
+            "$oid": "61917341b07e6c0013f4988a"
+        },
+        "name": "code-senden",
+        "__v": 2,
+        "aliases": [
+            "glaskugel",
+            "magiekugel"
+        ],
+        "content": "🪄 ...⭐        ....⭐ .     ...⭐   🌑 \n...⭐      ...⭐      ✈️  ...⭐ \n    ...⭐      ...⭐        ...⭐ \n \n🛫  - ----- -- - - - - - - - - - - - - - - -  🛬 \n                        /          //\n                              🔮 \n                      /    /\n\noh, wie es scheint ist die Glaskugel während des Fluges rausgefallen... 😱\n\n\n  ... aber wer ist denn da? Pepe, er hat die Kugel gefangen!!\n\n\n🔮\n<:HYPERS:774315024800940042> \n\n___\n\nOh nein! Sie ist ihm aus der Hand gefallen <:pepeSad:811569890858500118>\nJetzt musst du doch Code senden, damit dir geholfen werden kann <:pepeSad:811569890858500118>",
+        "createdAt": {
+            "$date": "2021-11-03T10:38:32.958Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "619bc86ab07e6c0013f498e2"
+        },
+        "createdAt": {
+            "$date": "2021-11-22T16:42:18.485Z"
+        },
+        "aliases": [],
+        "name": "richtig-googlen",
+        "content": "**__Wie Du richtig googlest__**\n\n- Google immer auf Englisch, so findest du meist deine erwarteten Antworten \n\n- Google niemals mit langen Sätzen, eher mit kurzen Stichwörtern\n\n- Falls du eine Exception (Fehler) hast, google nach der Message, des Fehlers\n\n- Niemals GuteFrage.net besuchen!",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "61ab423f2752bb0014193d85"
+        },
+        "name": "dsc-docs",
+        "__v": 0,
+        "aliases": [],
+        "content": "Bei einfachen Fragen wie zum Beispiel `Wie mache ich ein Embed?` ist es am besten, einfach mal die Docs(https://discord.js.org/#/docs/main/stable/general/welcome#/) durch zu lesen oder Google zu fragen(`tag richtig-googlen`)",
+        "createdAt": {
+            "$date": "2021-12-02T21:08:19.998Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "61ab93c62752bb0014193d8c"
+        },
+        "createdAt": {
+            "$date": "2021-12-04T16:13:58.662Z"
+        },
+        "aliases": [],
+        "name": "allerseits",
+        "content": "Hallo :)",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "61f162480952510013c11a36"
+        },
+        "createdAt": {
+            "$date": "2022-01-26T15:01:27.995Z"
+        },
+        "aliases": [
+            "logger"
+        ],
+        "name": "plugin-logger",
+        "content": "Hallo c:\nDu möchtest anscheinend etwas in deinem Plugin loggen.\nDas solltest du jedoch nicht über `ConsoleSender` oder `System.out.println()` machen.\nDafür gibt es den Plugin Logger. Diesen bekommst du wenn du in deiner Plugin Klasse (da wo onEnable und so ist) `Plugin#getLogger()` aufrufst.\nDieser Logger schreibt für dich bereits alles in den Spigot Log zusammen mit deinem Pluginnamen.\n\nDu darfst dafür sogar ausnahmsweise eine statische Methode in deiner Plugin Klasse anlegen, die den PluginLogger zurückgibt. Es ist jedoch immer besser die Logger Instanz dorthin mitzugeben, wo geloggt werden soll. Die meisten deiner Klassen haben vermutlich ohnehin eine Plugin Referenz, aus der du dir jederzeit den Logger holen kannst c:\n\n```java\n// normaler info log\nlogger.info(\"Das ist eine Info.\");\nlogger.warning(\"Hier is etwas kaputt\")\n\n// Exception loggen\n// Wir loggen die Exception auf den SEVERE Level. Das ist das höchste Level. Das benutzt man für kritische Fehler. Weniger kritische Fehler sollten mit WARNING geloggt werden.\ncatch(Exception e) {\n  logger.log(LEVEL.SEVERE, \"Da ging wohl was schief.\", e)\n}\n```\n\nAlso dann! Frohes loggen!",
+        "__v": 1
+    },
+    {
+        "_id": {
+            "$oid": "623ee221ec5f9e00137a8e6a"
+        },
+        "name": "mc-colors",
+        "__v": 1,
+        "aliases": [
+            "mc-cc"
+        ],
+        "content": "In Minecraft kannst du viele verscheidene Farben im Chat benutzen. Um einen Text farbig zu schrieben brauchst du als erstes ein § Zeichen. Hier findest du eine Liste von allen möglichen Farben:\n\n`§0` für Schwarz \n`§1` für Dunkel Blau\n`§2` für Dunkel Grün\n`§3` für Dunkel Aqua\n`§4` für Dunkel Rot\n`§5` für Lila\n`§6` für Orange\n`§7` für Grau\n`§8` für Dunkel Grau\n`§9` für Blau\n\n`§a` für Grün\n`§b` für Aqua\n`§c` für Rot\n`§d` für Pink\n`§e` für Gelb\n`§f` für Weiß\n\nSpezial\n`§k` für \"magischen\" Text\n`§l` für fetten Text\n`§m` für durchgestrichenen Text\n`§n` für unterstrichenen Text\n`§o` für kursiven Text\n`§r` um den Text zu resetten\n\nWenn du willst kannst du auch <https://htmlcolorcodes.com/minecraft-color-codes/> benutzen.\n\n__Achtung!__\nDir wird `§<code>` nur in deiner IDE helfen. Minecraft blockt `§` im Chat und ist damit unbrauchbar.\nUm Farben in Minecraft benutzen zu können musst du `ChatColor.translateAlternateColorCodes('<Synmbol (z.B. &)>', text)`. Damit kannst du dann einbauen das z.B. `&c` in `§c` umgewandelt wird. Der Text ist dabei die Nachricht die du dafür benutzen willst. Natürlich kannst du auch ein Plugin benutzen welches auf <https://spigotmc.org/> verfügbar ist und diese Funktion eingebaut hat.",
+        "createdAt": {
+            "$date": "2022-03-15T03:43:27.639Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "624d9ca0045b74001446c691"
+        },
+        "createdAt": {
+            "$date": "2022-04-06T13:58:56.278Z"
+        },
+        "aliases": [],
+        "name": "ssh-tunnel",
+        "content": "Wenn du dich zu einem Dienst auf deinem Server verbinden willst ist es oftmals die schlechtestes Lösung den Port zu öffnen.\nAngreifer suchen automatisiert nach offenen Diensten wie Datenbanken und starten gezielt Brutforce oder andere Angriffe um Zugriff auf deine Daten zu erhalten.\n\nUm Abhilfe zu schaffen existieren SSH Tunnel.\n\nFür Datenbanken haben DataGrip und HeidiSQL bereits Integrationen und das Einstellen ist extrem simpel.\n\n**DataGrip**: <https://www.jetbrains.com/help/datagrip/configuring-ssh-and-ssl.html>\n**HeidiSQL**: <https://marcus-obst.de/wiki/Database%20-%20HeidiSQL%20SSH%20Tunnel%20Setup>\n\nAlternativ kannst du über dein Terminal einfach einen SSH Tunnel herstellen.\n\n`ssh -L 3000:localhost:3306 -i /path/to/key_file user@​my_server.com`\n\nDieser Befehl macht deinen Dienst, welcher auf deinem Server auf dem `localhost` mit Port `3306` verfügbar ist, auf deinem System unter Port `3000` verfügbar. Natürlich auch auf dem `localhost`.\n\nWenn deine Datenbank in einem Docker Container läuft musst du `localhost` eventuell durch die interne IP des Containers ersetzen.\n\nEin kleines tldr des SSH Commands findest du hier:\n**tldr**: <https://github.com/tldr-pages/tldr/blob/main/pages/common/ssh.md>\n**Ausführlich**: <https://www.everythingcli.org/ssh-tunnelling-for-fun-and-profit-local-vs-remote/>\n\nWenn du Server untereinander verbinden willst empfehle ich AutoSSH\n**tldr**: <https://github.com/tldr-pages/tldr/blob/main/pages/common/autossh.md>\n**Ausführlich**: <https://www.everythingcli.org/ssh-tunnelling-for-fun-and-profit-autossh/>",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "62c1fdd261cbd70013653e8a"
+        },
+        "createdAt": {
+            "$date": "2022-07-03T20:36:34.404Z"
+        },
+        "aliases": [
+            "owl",
+            "🦉"
+        ],
+        "name": "eule",
+        "content": "🦉",
+        "__v": 2
+    }
+]

@@ -1,0 +1,1 @@
+Bitte lese dir <#808665677929512961> durch und schildere dann dein Problem in dem richtigen coding Channel. Falls dein Problem nichts mit coden zu tun hat Frage bitte in <#798828200884305940> nach. Nur so kann dir geholfen werden! 🙂 

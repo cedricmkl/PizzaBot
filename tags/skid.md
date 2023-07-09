@@ -1,0 +1,1 @@
+Skidding nimmt Bezug auf eine Person, die fremden Quellcode für eigene Projekte zusammenkopiert, um deren Effekte zu nutzen, ohne jedoch den Code zu verstehen. Dies ist jedoch abzugrenzen von der Benutzung von Programmbibliotheken. 
