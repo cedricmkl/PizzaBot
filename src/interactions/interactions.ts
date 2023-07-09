@@ -1,8 +1,6 @@
 import { AutocompleteInteraction, ButtonInteraction, ChatInputCommandInteraction, Client, CommandInteraction, Interaction } from "discord.js";
 import { tagAutocomplete } from "./autocomplete/tag.autocomplete";
-import { rolesButtonSubmit } from "./button/roles.button";
 import { tagsRequestButtonSubmit } from "./button/tag-request.button";
-import { adminCommand } from "./command/admin.command";
 import { colorCommand } from "./command/color.command";
 import { googleCommand } from "./command/google.command";
 import { infoCommand } from "./command/info.command";
@@ -37,9 +35,6 @@ async function handleCommand(interaction: ChatInputCommandInteraction) {
             case "info":
                 await infoCommand(interaction)
                 break
-            case "admin":
-                await adminCommand(interaction)
-                break
             case "color":
                 await colorCommand(interaction)
                 break
@@ -66,7 +61,6 @@ async function handleButton(interaction: ButtonInteraction) {
 
     try {
         if (interaction.customId.startsWith("tagrequest_")) await tagsRequestButtonSubmit(interaction)
-        else if (interaction.customId.startsWith("roles_")) await rolesButtonSubmit(interaction)
     } catch (err) {
         console.error(err)
         await errorReply(interaction, "Es ist ein Fehler aufgetreten", err, true)
