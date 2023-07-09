@@ -14,29 +14,5 @@
                 "required": true
             }
         ]
-    },
-    {
-        "name": "color",
-        "description": "Ändere deine Rollenfarbe.",
-        "options": [
-            {
-                "type": 1,
-                "name": "set",
-                "description": "Setze deine Rollenfarbe.",
-                "options": [
-                    {
-                        "type": 3,
-                        "name": "color",
-                        "description": "Die Farbe (HEX)",
-                        "required": true
-                    }
-                ]
-            },
-            {
-                "type": 1,
-                "name": "reset",
-                "description": "Setze deine Rollenfarbe zurück."
-            }
-        ]
     }
 ]
