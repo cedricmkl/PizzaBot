@@ -3,6 +3,7 @@ aliases: ["haste"]
 ---
 
 Um dir besser helfen zu können, benötigen wir deinen Quellcode und ggf. deine Fehlermeldung. Um diese mit uns zu teilen, kannst du eine der folgenden Seiten verwenden:
+- <https://pastes.dev/>
 - <https://haste.l4zs.de/>
 - <https://gist.github.com/> (GitHub Account erforderlich!)
 - <https://pastefy.ga/>
